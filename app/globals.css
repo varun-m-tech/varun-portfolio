@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Matte Midnight palette */
+  --color-ink:         #0A0E17;
+  --color-surface:     #11161F;
+  --color-surface-alt: #141A24;
+  --color-text:        #ECE7DD;
+  --color-muted:       #8A93A3;
+  --color-brass:       #D8B450;
+  --color-cyan:        #38BDF8;
+
+  /* Typography — next/font injects these CSS vars onto <html> */
+  --font-serif: var(--font-fraunces), Georgia, serif;
+  --font-sans:  var(--font-space-grotesk), system-ui, sans-serif;
+  --font-mono:  var(--font-jetbrains-mono), "JetBrains Mono", monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: auto; /* Lenis owns smooth scroll */
+}
+
+body {
+  background-color: #0A0E17;
+  color: #ECE7DD;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle film-grain overlay — pure CSS, no extra asset */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
