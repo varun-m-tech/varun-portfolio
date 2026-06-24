@@ -1,7 +1,7 @@
 "use client";
 
 import { type MouseEvent, type ReactNode, useEffect, useRef, useState } from "react";
-import { motion, useInView, animate, useMotionValue, useSpring } from "framer-motion";
+import { motion, animate, useMotionValue, useSpring } from "framer-motion";
 import SecureMesh from "@/components/SecureMesh";
 import PhilosophySection from "@/components/PhilosophySection";
 import TechStack from "@/components/TechStack";
@@ -83,18 +83,32 @@ function Counter({
   locale?: boolean;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const fired = useRef(false);
   const [val, setVal] = useState(0);
 
   useEffect(() => {
-    if (!inView) return;
-    const controls = animate(0, to, {
-      duration: 1.8,
-      ease: [0.22, 1, 0.36, 1],
-      onUpdate: (v) => setVal(v),
-    });
-    return () => controls.stop();
-  }, [inView, to]);
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !fired.current) {
+          fired.current = true;
+          observer.disconnect();
+          const controls = animate(0, to, {
+            duration: 1.8,
+            ease: [0.22, 1, 0.36, 1],
+            onUpdate: (v) => setVal(v),
+          });
+          return () => controls.stop();
+        }
+      },
+      { threshold: 0.15 },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [to]);
 
   const display = locale
     ? Math.round(val).toLocaleString()
@@ -148,7 +162,7 @@ const CAREER_CARDS = [
         <path d="M16 3.13a4 4 0 0 1 0 7.75" />
       </svg>
     ),
-    body: "Before I tested software, I taught people. 30,000+ students across live and recorded programmes, plus founding and leading a 22-member technical branch.",
+    body: "Teaching and testing ran in parallel — 30,000+ students across live and recorded programmes while building automation frameworks professionally.",
     bullets: [
       "30,000+ students  ·  live & recorded formats",
       "Manual QA · Selenium · Interview prep",
