@@ -2,11 +2,25 @@
 
 import { type MouseEvent, type ReactNode, useEffect, useRef, useState } from "react";
 import { motion, useInView, animate, useMotionValue, useSpring } from "framer-motion";
-import Scene3D from "@/components/Scene3D";
+import SecureMesh from "@/components/SecureMesh";
 import PhilosophySection from "@/components/PhilosophySection";
 import TechStack from "@/components/TechStack";
 
-/* ─────────────────────────── Magnetic button ─────────────────────────── */
+/* ── Fade-up animation variant ─────────────────────────────────────────── */
+const fadeUp = {
+  hidden: { opacity: 0, y: 28 },
+  show: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.85,
+      delay: i * 0.11,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+  }),
+};
+
+/* ── Magnetic button ────────────────────────────────────────────────────── */
 function MagneticButton({
   children,
   href,
@@ -22,7 +36,7 @@ function MagneticButton({
   const x = useSpring(mx, { stiffness: 150, damping: 15, mass: 0.3 });
   const y = useSpring(my, { stiffness: 150, damping: 15, mass: 0.3 });
 
-  const onMove = (e: MouseEvent) => {
+  const onMove = (e: MouseEvent<HTMLAnchorElement>) => {
     const r = ref.current!.getBoundingClientRect();
     mx.set((e.clientX - (r.left + r.width / 2)) * 0.35);
     my.set((e.clientY - (r.top + r.height / 2)) * 0.35);
@@ -33,11 +47,11 @@ function MagneticButton({
   };
 
   const base =
-    "relative inline-flex items-center justify-center rounded-full px-7 py-3 text-sm font-medium tracking-wide outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[#E8B84B]/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black";
+    "relative inline-flex items-center justify-center rounded-full px-7 py-3 text-sm font-medium tracking-wide outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[#D8B450]/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0E17]";
   const skin =
     variant === "solid"
-      ? "bg-[#E8B84B] text-[#1a1305] hover:bg-[#f1c860]"
-      : "border border-white/15 text-[#EDEAE0] hover:border-[#E8B84B]/60 hover:text-white";
+      ? "bg-[#D8B450] text-[#0A0E17] hover:bg-[#e8c96a]"
+      : "border border-white/15 text-[#ECE7DD] hover:border-[#D8B450]/60 hover:text-white";
 
   return (
     <motion.a
@@ -54,17 +68,19 @@ function MagneticButton({
   );
 }
 
-/* ─────────────────────── Count-up metric number ─────────────────────── */
+/* ── Count-up number ────────────────────────────────────────────────────── */
 function Counter({
   to,
   decimals = 0,
   prefix = "",
   suffix = "",
+  locale = false,
 }: {
   to: number;
   decimals?: number;
   prefix?: string;
   suffix?: string;
+  locale?: boolean;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -73,49 +89,90 @@ function Counter({
   useEffect(() => {
     if (!inView) return;
     const controls = animate(0, to, {
-      duration: 1.6,
+      duration: 1.8,
       ease: [0.22, 1, 0.36, 1],
       onUpdate: (v) => setVal(v),
     });
     return () => controls.stop();
   }, [inView, to]);
 
+  const display = locale
+    ? Math.round(val).toLocaleString()
+    : val.toFixed(decimals);
+
   return (
     <span ref={ref}>
       {prefix}
-      {val.toFixed(decimals)}
+      {display}
       {suffix}
     </span>
   );
 }
 
-/* ─────────────────────────────── content ─────────────────────────────── */
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] as const },
-  }),
-};
+/* ── Data ───────────────────────────────────────────────────────────────── */
 
 const METRICS = [
-  { to: 6.6, decimals: 1, prefix: "", suffix: "+", label: "years in quality" },
-  { to: 400, decimals: 0, prefix: "", suffix: "+", label: "tests automated" },
-  { to: 60, decimals: 0, prefix: "~", suffix: "%", label: "less manual regression" },
+  { to: 7, suffix: "+", label: "years in quality" },
+  { to: 4, suffix: "", label: "domains mastered" },
+  { to: 60, prefix: "~", suffix: "%", label: "regression cut" },
+  { to: 40, prefix: "~", suffix: "%", label: "CI flakiness cut" },
+  { to: 30000, suffix: "+", label: "students reached", locale: true },
+  { to: 22, suffix: "", label: "member branch led" },
+] as const;
+
+const CAREER_CARDS = [
+  {
+    title: "Engineering",
+    accent: "#D8B450",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <polyline points="16 18 22 12 16 6" />
+        <polyline points="8 6 2 12 8 18" />
+      </svg>
+    ),
+    body: "7+ years shipping test automation across fintech, healthcare, and SaaS platforms. I build frameworks that scale — not just tests that pass.",
+    bullets: [
+      "Selenium · Playwright · Cypress · RestAssured",
+      "Jenkins · GitHub Actions · Docker · CI pipelines",
+      "~60% regression cost cut  ·  ~40% CI flakiness cut",
+    ],
+  },
+  {
+    title: "Teaching & Leadership",
+    accent: "#38BDF8",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+    body: "Before I tested software, I taught people. 30,000+ students across live and recorded programmes, plus founding and leading a 22-member technical branch.",
+    bullets: [
+      "30,000+ students  ·  live & recorded formats",
+      "Manual QA · Selenium · Interview prep",
+      "Branch founder & technical lead",
+    ],
+  },
 ];
 
+/* ── Page ───────────────────────────────────────────────────────────────── */
 export default function Page() {
   return (
     <>
-      {/* Fixed 3D background — sits behind everything, follows scroll */}
-      <Scene3D />
+      {/* Fixed 3-D mesh — renders behind all content */}
+      <SecureMesh />
 
       <main className="relative z-10">
-        {/* ───────────────── HERO ───────────────── */}
-        <section id="hero" className="relative flex min-h-screen items-center">
-          {/* legibility veil over the 3D, left-weighted so the core breathes on the right */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-transparent" />
+
+        {/* ── HERO ─────────────────────────────────────────────────────── */}
+        <section
+          id="hero"
+          className="relative flex min-h-screen items-center"
+        >
+          {/* legibility veil — strong left, fades right so the 3D breathes */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0A0E17]/90 via-[#0A0E17]/50 to-transparent" />
 
           <div className="relative mx-auto w-full max-w-6xl px-6">
             <motion.p
@@ -123,7 +180,7 @@ export default function Page() {
               initial="hidden"
               animate="show"
               custom={0}
-              className="mb-6 text-xs uppercase tracking-[0.28em] text-[#E8B84B]"
+              className="mb-6 text-xs uppercase tracking-[0.28em] text-[#D8B450]"
             >
               Senior SDET · QA Automation · Bangalore, India
             </motion.p>
@@ -138,7 +195,7 @@ export default function Page() {
             >
               Quality,
               <br />
-              <span className="italic text-[#E8B84B]">by design.</span>
+              <span className="italic text-[#D8B450]">by design.</span>
             </motion.h1>
 
             <motion.p
@@ -146,11 +203,11 @@ export default function Page() {
               initial="hidden"
               animate="show"
               custom={2}
-              className="mt-7 max-w-xl text-lg leading-relaxed text-white/70"
+              className="mt-7 max-w-xl text-lg leading-relaxed text-white/65"
             >
-              I&apos;m Varun — a Senior SDET who spent years teaching before I spent them
-              testing. I build automation that catches what people miss, and I&apos;ve never
-              stopped explaining how.
+              I&apos;m Varun — a Senior SDET who spent years teaching before I spent
+              them testing. I build automation that catches what people miss, and
+              I&apos;ve never stopped explaining how.
             </motion.p>
 
             <motion.div
@@ -160,70 +217,247 @@ export default function Page() {
               custom={3}
               className="mt-9 flex flex-wrap gap-4"
             >
-              <MagneticButton href="#software" variant="solid">
-                Explore my work
+              <MagneticButton href="/sdet" variant="solid">
+                View Work
               </MagneticButton>
-              {/* drop Varun-M-Resume.pdf into /public and this just works */}
-              <MagneticButton href="/Varun-M-Resume.pdf" variant="ghost">
-                Download résumé
+              <MagneticButton href="/resume" variant="ghost">
+                Résumé
               </MagneticButton>
             </motion.div>
           </div>
         </section>
 
-        {/* ───────────────── METRICS ───────────────── */}
-        <section id="metrics" className="relative py-28">
+        {/* ── METRICS BAND ─────────────────────────────────────────────── */}
+        <section id="metrics" className="relative py-20">
           <div className="mx-auto max-w-6xl px-6">
-            <div className="grid divide-y divide-white/10 overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 lg:grid-cols-6 lg:gap-2">
               {METRICS.map((m, i) => (
                 <motion.div
                   key={m.label}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.6, delay: i * 0.1 }}
-                  className="p-8 text-center sm:text-left"
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6, delay: i * 0.08 }}
+                  className="rounded-xl border border-white/10 bg-white/[0.04] backdrop-blur-sm px-4 py-6 text-center"
                 >
                   <div
                     style={{ fontFamily: "var(--font-serif)" }}
-                    className="text-4xl font-semibold text-[#E8B84B] sm:text-5xl"
+                    className="text-3xl font-semibold text-[#D8B450] sm:text-4xl"
                   >
-                    <Counter to={m.to} decimals={m.decimals} prefix={m.prefix} suffix={m.suffix} />
+                    <Counter
+                      to={m.to}
+                      prefix={"prefix" in m ? m.prefix : ""}
+                      suffix={m.suffix}
+                      locale={"locale" in m ? m.locale : false}
+                    />
                   </div>
-                  <p className="mt-2 text-sm text-white/60">{m.label}</p>
+                  <p className="mt-1.5 text-xs leading-snug text-white/50">{m.label}</p>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-    
+        {/* ── CAREER SNAPSHOT ──────────────────────────────────────────── */}
+        <section id="career" className="relative py-20">
+          <div className="mx-auto max-w-6xl px-6">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.7 }}
+              style={{ fontFamily: "var(--font-serif)" }}
+              className="mb-10 text-4xl tracking-tight sm:text-5xl"
+            >
+              Two careers,{" "}
+              <span className="italic text-[#D8B450]">one philosophy.</span>
+            </motion.h2>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              {CAREER_CARDS.map((card, i) => (
+                <motion.div
+                  key={card.title}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.7, delay: i * 0.12 }}
+                  className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-8"
+                >
+                  <div className="mb-5 flex items-center gap-3">
+                    <div
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
+                      style={{ background: `${card.accent}22`, color: card.accent }}
+                    >
+                      {card.icon}
+                    </div>
+                    <h3
+                      style={{ fontFamily: "var(--font-serif)" }}
+                      className="text-xl font-semibold"
+                    >
+                      {card.title}
+                    </h3>
+                  </div>
+                  <p className="mb-5 text-sm leading-relaxed text-white/60">
+                    {card.body}
+                  </p>
+                  <ul className="space-y-2">
+                    {card.bullets.map((b) => (
+                      <li key={b} className="flex items-start gap-2 text-xs text-white/45">
+                        <span
+                          className="mt-1 h-1 w-1 shrink-0 rounded-full"
+                          style={{ background: card.accent }}
+                        />
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── ABOUT GLANCE ─────────────────────────────────────────────── */}
+        <section id="about" className="relative py-20">
+          <div className="mx-auto max-w-6xl px-6">
+            <div className="grid items-center gap-14 md:grid-cols-2">
+              {/* Photo placeholder */}
+              <motion.div
+                initial={{ opacity: 0, x: -24 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.8 }}
+                className="mx-auto w-full max-w-xs md:mx-0"
+              >
+                <div className="aspect-[3/4] w-full rounded-2xl border border-white/10 bg-white/[0.04] flex flex-col items-center justify-center gap-3 text-white/25">
+                  <svg
+                    width="48"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                  >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                  <span className="text-xs tracking-wide">Photo coming soon</span>
+                </div>
+              </motion.div>
+
+              {/* Bio */}
+              <motion.div
+                initial={{ opacity: 0, x: 24 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+              >
+                <p className="mb-3 text-xs uppercase tracking-[0.22em] text-[#38BDF8]">
+                  About
+                </p>
+                <h2
+                  style={{ fontFamily: "var(--font-serif)" }}
+                  className="mb-5 text-4xl tracking-tight sm:text-5xl"
+                >
+                  From the classroom
+                  <br />
+                  <span className="italic text-[#D8B450]">to the codebase.</span>
+                </h2>
+                <p className="mb-4 text-base leading-relaxed text-white/60">
+                  I started my career as a trainer — teaching 30,000+ students the
+                  fundamentals of testing and quality. That shift into classrooms
+                  changed the way I think about code: every system has users, every
+                  bug has a story, and the best engineers are the ones who can explain
+                  what went wrong.
+                </p>
+                <p className="mb-8 text-base leading-relaxed text-white/60">
+                  Today I work as a Senior SDET at a cybersecurity firm, building
+                  automation frameworks and pipelines that make quality visible — and
+                  fast.
+                </p>
+                <MagneticButton href="/contact" variant="solid">
+                  Get in touch
+                </MagneticButton>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── CTA STRIP ────────────────────────────────────────────────── */}
+        <section id="cta" className="relative py-20 border-t border-b border-white/[0.07]">
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#D8B450]/[0.04] via-transparent to-[#38BDF8]/[0.04]" />
+          <div className="relative mx-auto max-w-6xl px-6 text-center">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.7 }}
+              style={{ fontFamily: "var(--font-serif)" }}
+              className="mb-3 text-4xl tracking-tight sm:text-5xl"
+            >
+              Ready to build{" "}
+              <span className="italic text-[#D8B450]">dependable?</span>
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+              className="mx-auto mb-9 max-w-md text-white/55"
+            >
+              Explore my engineering work, or grab a copy of my résumé.
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.25 }}
+              className="flex flex-wrap justify-center gap-4"
+            >
+              <MagneticButton href="/sdet" variant="solid">
+                View Work →
+              </MagneticButton>
+              <MagneticButton href="/resume" variant="ghost">
+                Résumé
+              </MagneticButton>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Existing quality-content sections */}
         <PhilosophySection />
         <TechStack />
 
-        {/* ───────────────── CONTACT (minimal for now) ───────────────── */}
+        {/* ── CONTACT ──────────────────────────────────────────────────── */}
         <section id="contact" className="relative py-28">
           <div className="mx-auto max-w-6xl px-6 text-center">
             <h2
               style={{ fontFamily: "var(--font-serif)" }}
               className="text-4xl tracking-tight sm:text-5xl"
             >
-              Let&apos;s build something <span className="italic text-[#E8B84B]">dependable.</span>
+              Let&apos;s build something{" "}
+              <span className="italic text-[#D8B450]">dependable.</span>
             </h2>
-            <p className="mx-auto mt-5 max-w-md text-white/60">
-              Open to conversations about quality engineering, automation, and training.
+            <p className="mx-auto mt-5 max-w-md text-white/55">
+              Open to conversations about quality engineering, automation, and
+              training.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <MagneticButton href="mailto:varunm.work1@gmail.com" variant="solid">
                 Email me
               </MagneticButton>
-              <MagneticButton href="https://linkedin.com/in/varun-m-78a106294" variant="ghost">
+              <MagneticButton
+                href="https://linkedin.com/in/varun-m-78a106294"
+                variant="ghost"
+              >
                 LinkedIn
               </MagneticButton>
             </div>
           </div>
         </section>
-
       </main>
     </>
   );
