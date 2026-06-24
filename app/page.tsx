@@ -217,18 +217,43 @@ export default function Page() {
               initial="hidden"
               animate="show"
               custom={2}
+              className="mt-4 text-xs text-white/35"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              <a
+                href="mailto:varunm.work1@gmail.com"
+                className="transition-colors hover:text-white/60"
+              >
+                varunm.work1@gmail.com
+              </a>
+              {" · "}
+              <a
+                href="https://linkedin.com/in/varun-m-78a106294"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-white/60"
+              >
+                linkedin.com/in/varun-m-78a106294
+              </a>
+            </motion.p>
+
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={3}
               className="mt-7 max-w-xl text-lg leading-relaxed text-white/65"
             >
-              I&apos;m Varun — a Senior SDET who spent years teaching before I spent
-              them testing. I build automation that catches what people miss, and
-              I&apos;ve never stopped explaining how.
+              I&apos;m Varun — a Senior SDET who has been testing professionally
+              since 2019, and teaching for just as long. I build automation that
+              catches what people miss, and I&apos;ve never stopped explaining how.
             </motion.p>
 
             <motion.div
               variants={fadeUp}
               initial="hidden"
               animate="show"
-              custom={3}
+              custom={4}
               className="mt-9 flex flex-wrap gap-4"
             >
               <MagneticButton href="/sdet" variant="solid">
@@ -381,16 +406,17 @@ export default function Page() {
                   <span className="italic text-[#D8B450]">to the codebase.</span>
                 </h2>
                 <p className="mb-4 text-base leading-relaxed text-white/60">
-                  I started my career as a trainer — teaching 30,000+ students the
-                  fundamentals of testing and quality. That shift into classrooms
-                  changed the way I think about code: every system has users, every
-                  bug has a story, and the best engineers are the ones who can explain
-                  what went wrong.
+                  Nearly seven years in quality engineering since 2019 — across
+                  cybersecurity, banking, fintech, logistics, and edtech. For most of
+                  that time I was also in classrooms: teaching 30,000+ students to
+                  test software at QSpider while building automation frameworks
+                  professionally. Not one after the other — both at once.
                 </p>
                 <p className="mb-8 text-base leading-relaxed text-white/60">
-                  Today I work as a Senior SDET at a cybersecurity firm, building
-                  automation frameworks and pipelines that make quality visible — and
-                  fast.
+                  Today I&apos;m a Senior SDET at Cyware Labs, working on
+                  Python/Pytest suites and CI pipelines for cybersecurity products.
+                  I&apos;ve added AI-assisted testing to the mix — Claude, Cursor,
+                  Gemini — and I still explain everything I build.
                 </p>
                 <MagneticButton href="/contact" variant="solid">
                   Get in touch

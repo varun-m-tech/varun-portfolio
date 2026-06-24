@@ -80,35 +80,77 @@ const TIMELINE = [
   {
     company: "Cyware Labs",
     role: "Senior SDET",
-    period: "2023 — Present",
+    period: "Feb 2025 — Present",
+    client: null as string | null,
     current: true,
     bullets: [
       "Built Python/Pytest automation suites for a cybersecurity product suite from the ground up",
       "Reduced full regression runtime by ~60% through parallelisation and smart test isolation",
       "Embedded coverage into CI/CD pipelines — near-zero false-positive rate across releases",
+      "Received the Above & Beyond award, presented jointly by the CEO and CTO",
     ],
   },
   {
     company: "OpenText",
-    role: "SDET",
-    period: "2021 — 2023",
+    role: "QA Engineer",
+    period: "Jun 2024 — Jan 2025",
+    client: "Toyota · Japan logistics",
     current: false,
     bullets: [
-      "API and UI automation for an enterprise content management platform at scale",
-      "Cut CI flakiness by ~40% using data-isolation strategies and intelligent retry logic",
-      "Mentored junior QA engineers on Selenium, framework design, and clean test architecture",
+      "End-to-end QA for a Toyota logistics platform serving the Japanese market",
+      "API and UI regression testing across high-stakes fortnightly release cycles",
+      "Contributed to pipeline stability improvements through data-isolation strategies",
     ],
   },
   {
     company: "Aspire Systems",
-    role: "QA Engineer",
-    period: "2018 — 2021",
+    role: "QA Automation Engineer",
+    period: "Jul 2023 — May 2024",
+    client: "Banking / FinTech · Malaysia",
     current: false,
     bullets: [
-      "Manual and automated testing for financial-services clients across multiple project tracks",
-      "Designed the initial Selenium regression framework from scratch",
-      "Delivered 400+ automated test cases — first automation coverage in the team",
+      "Java / Selenium / TestNG automation for a banking and fintech platform serving the Malaysian market",
+      "Designed regression and sanity suites from scratch for a greenfield engagement",
+      "Collaborated directly with client QA leads across time zones",
     ],
+  },
+  {
+    company: "QSpider / JSpider",
+    role: "Test Engineer · SQL Trainer · Branch Head",
+    period: "Aug 2019 — Jun 2023",
+    client: null as string | null,
+    current: false,
+    bullets: [
+      "Concurrent roles: practising test engineer while teaching SQL and QA to live batches simultaneously",
+      "Trained 30,000+ students across classroom and recorded programmes in Manual QA, Selenium, and SQL",
+      "Promoted to Branch Head, Mumbai — founded and led a 22-member technical team",
+      "Covered manual testing, Selenium WebDriver, SQL for testers, and interview-readiness coaching",
+    ],
+  },
+];
+
+const ACHIEVEMENTS = [
+  {
+    title: "Above & Beyond Award",
+    body: "Presented jointly by the CEO and CTO of Cyware Labs — for impact that exceeded the expectations of the role.",
+    accent: BRASS,
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <circle cx="12" cy="8" r="6" />
+        <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+      </svg>
+    ),
+  },
+  {
+    title: "H-1B Approved through 2028",
+    body: "US work authorisation approved and valid through 2028, enabling engagements with US-headquartered clients.",
+    accent: CYAN,
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        <polyline points="9 12 11 14 15 10" />
+      </svg>
+    ),
   },
 ];
 
@@ -200,9 +242,10 @@ export default function SdetContent() {
             className="mt-6 max-w-xl text-lg leading-relaxed"
             style={{ color: TEXT }}
           >
-            Senior SDET at Cyware Labs — building frameworks and pipelines that
-            make quality visible across cybersecurity products. Previously at
-            OpenText and Aspire Systems.
+            Senior SDET at Cyware Labs — building Python/Pytest frameworks and
+            CI pipelines for cybersecurity products. Nearly seven years across
+            cybersecurity, banking, fintech, logistics, and edtech, all under
+            Test Yantra Software Solutions since 2019.
           </motion.p>
         </div>
       </section>
@@ -216,10 +259,20 @@ export default function SdetContent() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             style={{ fontFamily: "var(--font-serif)" }}
-            className="mb-14 text-4xl tracking-tight sm:text-5xl"
+            className="mb-3 text-4xl tracking-tight sm:text-5xl"
           >
             Experience
           </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="mb-12 text-xs text-white/35"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            All positions under Test Yantra Software Solutions Pvt. Ltd. (Aug 2019 — Present)
+          </motion.p>
 
           <div className="relative">
             {/* Vertical guide line */}
@@ -284,11 +337,19 @@ export default function SdetContent() {
                       </span>
                     )}
                   </div>
-                  <div className="mb-4 flex flex-wrap items-center gap-2 text-sm">
+                  <div className="mb-1.5 flex flex-wrap items-center gap-2 text-sm">
                     <span style={{ color: CYAN }}>{role.role}</span>
                     <span className="text-white/30">·</span>
                     <span className="text-white/45">{role.period}</span>
                   </div>
+                  {role.client && (
+                    <p
+                      className="mb-3 text-xs text-white/35"
+                      style={{ fontFamily: "var(--font-mono)" }}
+                    >
+                      {role.client}
+                    </p>
+                  )}
                   <ul className="space-y-2.5">
                     {role.bullets.map((b) => (
                       <li
@@ -305,6 +366,35 @@ export default function SdetContent() {
                       </li>
                     ))}
                   </ul>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── ACHIEVEMENTS ──────────────────────────────────────────── */}
+      <section className="py-10">
+        <div className="mx-auto max-w-4xl px-6">
+          <div className="grid gap-4 sm:grid-cols-2">
+            {ACHIEVEMENTS.map((a, i) => (
+              <motion.div
+                key={a.title}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.55, delay: i * 0.1 }}
+                className="flex items-start gap-4 rounded-xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-sm"
+              >
+                <div
+                  className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
+                  style={{ background: `${a.accent}1a`, color: a.accent }}
+                >
+                  {a.icon}
+                </div>
+                <div>
+                  <p className="mb-1 text-sm font-semibold text-white/90">{a.title}</p>
+                  <p className="text-xs leading-relaxed text-white/50">{a.body}</p>
                 </div>
               </motion.div>
             ))}
