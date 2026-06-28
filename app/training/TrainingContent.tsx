@@ -166,6 +166,21 @@ const TESTIMONIALS = [
   },
 ];
 
+/*
+ * Reels created by students.
+ * TODO: swap these Instagram links for self-hosted MP4 inline players
+ * once videos are uploaded. Just replace the `url` with a relative path
+ * and render a <video> tag instead of an anchor.
+ */
+const STUDENT_REELS = [
+  { url: "https://www.instagram.com/reel/CUSHYQDpuz1/", label: "Student Reel — Batch 2021", accent: BRASS },
+  { url: "https://www.instagram.com/reel/Ca1Fq94piEW/", label: "Student Reel — Selenium Demo", accent: CYAN },
+  { url: "https://www.instagram.com/reel/Cd2PDscJPc4/", label: "Student Reel — SQL Session", accent: BRASS },
+  { url: "https://www.instagram.com/reel/CX7z6FeDBpI21tdaL0jdhE8lLwnLX7llq_4hD80/", label: "Student Reel — Batch Celebration", accent: CYAN },
+  { url: "https://www.instagram.com/tv/CW0SOxUJBIh/", label: "Student TV — Live Session", accent: BRASS },
+  { url: "https://www.instagram.com/reel/COx3-HoAqmYNd8HjnN0po1OL-sU4JVRM3Rm2xc0/", label: "Student Reel — Interview Prep", accent: CYAN },
+];
+
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   show: (i = 0) => ({
@@ -193,6 +208,15 @@ export default function TrainingContent() {
             background:
               "radial-gradient(ellipse 60% 65% at 88% 20%, rgba(216,180,80,0.12), transparent 55%)," +
               "radial-gradient(ellipse 40% 40% at 10% 80%, rgba(56,189,248,0.07), transparent 55%)",
+          }}
+        />
+        {/* Dark halo for hero text */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 65% 85% at 20% 50%, rgba(10,14,23,0.65) 0%, transparent 80%)",
           }}
         />
         <div className="relative mx-auto max-w-6xl px-6">
@@ -248,7 +272,7 @@ export default function TrainingContent() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.75 }}
-            className="rounded-2xl border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm sm:p-10"
+            className="rounded-2xl border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] sm:p-10"
           >
             <div
               className="mb-3 h-px w-10"
@@ -279,7 +303,7 @@ export default function TrainingContent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="rounded-xl border border-white/10 bg-white/[0.04] px-6 py-8 text-center backdrop-blur-sm"
+                className="rounded-xl border border-white/10 bg-white/[0.05] px-6 py-8 text-center backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.07)]"
               >
                 <div
                   style={{ fontFamily: "var(--font-serif)", color: BRASS }}
@@ -380,7 +404,7 @@ export default function TrainingContent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.65, delay: i * 0.1 }}
-                className="rounded-2xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm"
+                className="rounded-2xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_4px_20px_rgba(0,0,0,0.2)] transition-colors hover:border-white/20"
               >
                 <div className="mb-4 flex items-center gap-3">
                   <div
@@ -447,7 +471,7 @@ export default function TrainingContent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.65, delay: i * 0.1 }}
-                className="flex flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm"
+                className="flex flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
               >
                 {/* Opening quote mark */}
                 <div
@@ -474,6 +498,107 @@ export default function TrainingContent() {
           <p className="mt-4 text-xs text-white/30">
             Placeholder testimonials — real quotes to be added.
           </p>
+        </div>
+      </section>
+
+      {/* ── STUDENT REELS ─────────────────────────────────────────── */}
+      {/*
+       * Reels created by students.
+       * TODO: swap Instagram URLs for self-hosted MP4 inline players
+       * once videos are hosted. Replace <a> with <video> tag per reel.
+       */}
+      <section className="py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            style={{ fontFamily: "var(--font-serif)" }}
+            className="mb-3 text-4xl tracking-tight sm:text-5xl"
+          >
+            Reels created by{" "}
+            <span className="italic" style={{ color: BRASS }}>my students.</span>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="mb-10 text-sm text-white/45"
+          >
+            Students made these to capture what they learned — click any card to watch on Instagram.
+          </motion.p>
+
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+            {STUDENT_REELS.map((reel, i) => (
+              <motion.a
+                key={reel.url}
+                href={reel.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Watch: ${reel.label} (opens Instagram in a new tab)`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.6, delay: i * 0.08 }}
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                className="group relative flex aspect-[9/16] flex-col items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_4px_24px_rgba(0,0,0,0.3)] transition-all duration-200 hover:border-white/25 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.10),0_8px_32px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D8B450]/70"
+                style={{
+                  background:
+                    i % 2 === 0
+                      ? `radial-gradient(ellipse at 50% 30%, ${BRASS}14, rgba(10,14,23,0.97))`
+                      : `radial-gradient(ellipse at 50% 30%, ${CYAN}12, rgba(10,14,23,0.97))`,
+                }}
+              >
+                {/* Accent top bar */}
+                <div
+                  className="absolute top-0 inset-x-0 h-[2px] rounded-t-2xl opacity-60 group-hover:opacity-100 transition-opacity"
+                  style={{ background: reel.accent }}
+                />
+
+                {/* Play icon */}
+                <div
+                  className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border transition-all duration-200 group-hover:scale-110"
+                  style={{
+                    borderColor: `${reel.accent}50`,
+                    background: `${reel.accent}18`,
+                    color: reel.accent,
+                  }}
+                >
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden
+                  >
+                    <polygon points="5 3 19 12 5 21 5 3" />
+                  </svg>
+                </div>
+
+                {/* Label */}
+                <p
+                  className="px-4 text-center text-xs font-medium leading-snug transition-colors duration-200 group-hover:text-white"
+                  style={{ color: "rgba(236,231,221,0.6)" }}
+                >
+                  {reel.label}
+                </p>
+
+                {/* External link indicator */}
+                <div
+                  className="absolute bottom-3 right-3 opacity-0 transition-opacity duration-200 group-hover:opacity-70"
+                  style={{ color: reel.accent }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                </div>
+              </motion.a>
+            ))}
+          </div>
         </div>
       </section>
 

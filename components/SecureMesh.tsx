@@ -65,15 +65,22 @@ const EDGES: Array<[number, number]> = (() => {
   return out;
 })();
 
+/* 2-D projections of NODES for the static SVG fallback (orthographic, viewBox 0 0 160 100) */
+const SVG_NODES = NODES.map((n) => ({
+  x: ((n.pos[0] + 8) / 16) * 156 + 2,
+  y: ((n.pos[1] + 5) / 10) * 96 + 2,
+  color: n.color,
+  r: 0.38 + (n.size - 0.04) * 3.5,
+}));
+
 /* ── 3-D mesh scene ─────────────────────────────────────────────────────── */
 function MeshScene() {
   const groupRef = useRef<THREE.Group>(null!);
   const mouse = useRef([0, 0]);
   const autoY = useRef(0);
-  const sx = useRef(0); // smoothed parallax x
-  const sy = useRef(0); // smoothed parallax y
+  const sx = useRef(0);
+  const sy = useRef(0);
 
-  /* Build edge geometry once (client-only — runs inside Canvas) */
   const lineGeo = useMemo(() => {
     const verts: number[] = [];
     for (const [i, j] of EDGES) {
@@ -96,10 +103,7 @@ function MeshScene() {
   }, []);
 
   useFrame((_, dt) => {
-    /* slow auto-rotation */
     autoY.current += dt * 0.035;
-
-    /* exponential smoothing toward mouse target */
     const lam = 1 - Math.exp(-4 * dt);
     sx.current += (mouse.current[0] * 0.18 - sx.current) * lam;
     sy.current += (mouse.current[1] * 0.13 - sy.current) * lam;
@@ -112,19 +116,21 @@ function MeshScene() {
 
   return (
     <group ref={groupRef}>
-      {/* Glowing edge network */}
+      {/* Edge network — opacity reduced ~35% from original 0.20 */}
       <lineSegments geometry={lineGeo}>
-        <lineBasicMaterial color={CYAN} transparent opacity={0.2} />
+        <lineBasicMaterial color={CYAN} transparent opacity={0.13} />
       </lineSegments>
 
-      {/* Nodes */}
+      {/* Nodes — opacity reduced ~35% from original 1.0 */}
       {NODES.map((n, i) => (
         <mesh key={i} position={n.pos}>
           <sphereGeometry args={[n.size, 7, 7]} />
           <meshStandardMaterial
             color={n.color}
             emissive={n.color}
-            emissiveIntensity={n.color === BRASS ? 1.8 : 2.6}
+            emissiveIntensity={n.color === BRASS ? 1.17 : 1.69}
+            transparent
+            opacity={0.65}
           />
         </mesh>
       ))}
@@ -132,21 +138,62 @@ function MeshScene() {
   );
 }
 
-/* ── Static fallback ─────────────────────────────────────────────────────── */
+/* ── Static SVG mesh fallback (mobile / reduced-motion / no WebGL) ────────
+   Uses the same NODES/EDGES data projected orthographically to 2-D.
+   No animation, no scripts — just a dimmed vector mesh.
+   TODO: replace with a self-hosted animated SVG if more visual richness is needed.
+*/
 function StaticFallback() {
   return (
-    <div
-      aria-hidden
-      className="absolute inset-0"
-      style={{
-        background: [
-          "radial-gradient(ellipse 60% 55% at 80% 20%, rgba(216,180,80,0.15) 0%, transparent 60%)",
-          "radial-gradient(ellipse 55% 60% at 20% 80%, rgba(56,189,248,0.12) 0%, transparent 60%)",
-          "radial-gradient(ellipse 35% 35% at 50% 50%, rgba(56,189,248,0.04) 0%, transparent 70%)",
-          "#0A0E17",
-        ].join(","),
-      }}
-    />
+    <div aria-hidden className="absolute inset-0">
+      {/* Base colour */}
+      <div className="absolute inset-0" style={{ background: "#0A0E17" }} />
+
+      {/* Soft colour halos */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: [
+            "radial-gradient(ellipse 60% 55% at 80% 20%, rgba(216,180,80,0.10) 0%, transparent 60%)",
+            "radial-gradient(ellipse 55% 60% at 20% 80%, rgba(56,189,248,0.08) 0%, transparent 60%)",
+          ].join(","),
+        }}
+      />
+
+      {/* Static SVG mesh — lightweight, no WebGL, no animation */}
+      <svg
+        className="absolute inset-0 h-full w-full"
+        viewBox="0 0 160 100"
+        preserveAspectRatio="xMidYMid slice"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden
+      >
+        {/* Edges */}
+        {EDGES.map(([i, j], k) => (
+          <line
+            key={k}
+            x1={SVG_NODES[i].x}
+            y1={SVG_NODES[i].y}
+            x2={SVG_NODES[j].x}
+            y2={SVG_NODES[j].y}
+            stroke={CYAN}
+            strokeWidth="0.15"
+            strokeOpacity="0.22"
+          />
+        ))}
+        {/* Nodes */}
+        {SVG_NODES.map((n, i) => (
+          <circle
+            key={i}
+            cx={n.x}
+            cy={n.y}
+            r={n.r}
+            fill={n.color}
+            fillOpacity="0.40"
+          />
+        ))}
+      </svg>
+    </div>
   );
 }
 

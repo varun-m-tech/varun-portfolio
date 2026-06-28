@@ -81,25 +81,30 @@ const TIMELINE = [
     company: "Cyware Labs",
     role: "Senior SDET",
     period: "Feb 2025 — Present",
-    client: null as string | null,
+    client: "Cybersecurity SaaS · CSAP platform",
     current: true,
     bullets: [
-      "Built Python/Pytest automation suites for a cybersecurity product suite from the ground up",
-      "Reduced full regression runtime by ~60% through parallelisation and smart test isolation",
-      "Embedded coverage into CI/CD pipelines — near-zero false-positive rate across releases",
-      "Received the Above & Beyond award, presented jointly by the CEO and CTO",
+      "End-to-end QA across UI, REST/OpenAPI, and mobile (iOS & Android) for a cybersecurity SaaS platform",
+      "Built Python/Pytest/Selenium automation suites from the ground up; drove quarterly release regression cycles",
+      "~60% regression runtime reduction through parallel execution and smart test isolation",
+      "Integrated Docker stack for local test environments; applied K8s and Argo CD basics for deployment awareness",
+      "Led full website-revamp QA — validated against Figma designs, automated broken-link detection, partnered with design/marketing/CEO; received the Above & Beyond award (CEO + CTO)",
+      "Embedded AI-assisted QE end-to-end using Claude, Cursor, Gemini, and Jira Rovo",
+      "Implemented MFA and central-platform test stories; resolved customer-facing issues end-to-end including email testing",
+      "2-week Agile sprints using JIRA, Confluence, and Bitbucket Pipelines",
     ],
   },
   {
     company: "OpenText",
     role: "QA Engineer",
     period: "Jun 2024 — Jan 2025",
-    client: "Toyota · Japan logistics",
+    client: "Logistics · Toyota · Japan",
     current: false,
     bullets: [
-      "End-to-end QA for a Toyota logistics platform serving the Japanese market",
-      "API and UI regression testing across high-stakes fortnightly release cycles",
-      "Contributed to pipeline stability improvements through data-isolation strategies",
+      "Gathered requirements directly with the Japan-based product team for Toyota's logistics platform",
+      "Authored test plans and test cases; executed Japanese-locale UI testing across browsers and devices",
+      "Conducted knowledge-transfer (KT) sessions to on-board new QA resources",
+      "Recognised by dev, product, and QA managers for delivery quality and cross-cultural communication",
     ],
   },
   {
@@ -109,22 +114,23 @@ const TIMELINE = [
     client: "Banking / FinTech · Malaysia",
     current: false,
     bullets: [
-      "Java / Selenium / TestNG automation for a banking and fintech platform serving the Malaysian market",
-      "Designed regression and sanity suites from scratch for a greenfield engagement",
-      "Collaborated directly with client QA leads across time zones",
+      "Designed Java/Selenium/TestNG hybrid framework — ~70% automated, ~30% manual coverage",
+      "REST API validation alongside UI regression; integrated into Jenkins CI pipeline",
+      "~40% CI flakiness reduction through improved test isolation and data-driven strategies",
+      "Collaborated directly with client QA leads across Malaysia time zones",
     ],
   },
   {
     company: "QSpider / JSpider",
     role: "Test Engineer · SQL Trainer · Branch Head",
     period: "Aug 2019 — Jun 2023",
-    client: null as string | null,
+    client: "EdTech · QA Training",
     current: false,
     bullets: [
-      "Concurrent roles: practising test engineer while teaching SQL and QA to live batches simultaneously",
-      "Trained 30,000+ students across classroom and recorded programmes in Manual QA, Selenium, and SQL",
-      "Promoted to Branch Head, Mumbai — founded and led a 22-member technical team",
-      "Covered manual testing, Selenium WebDriver, SQL for testers, and interview-readiness coaching",
+      "Concurrent roles: practising test engineer while teaching SQL, Manual Testing, and Java to morning, evening, and weekend batches simultaneously",
+      "Tested the QSpider institute platform end-to-end — student, trainer, HR, counselling, fee, and attendance apps",
+      "Trained 30,000+ students; ~90% batch completion rate; recognised by CEO for training impact",
+      "Promoted to Branch Head, Mumbai — led 22-member team owning training delivery, placements, counselling, HR, sales targets, and college/BPO partnerships",
     ],
   },
 ];
@@ -132,7 +138,7 @@ const TIMELINE = [
 const ACHIEVEMENTS = [
   {
     title: "Above & Beyond Award",
-    body: "Presented jointly by the CEO and CTO of Cyware Labs — for impact that exceeded the expectations of the role.",
+    body: "Presented jointly by the CEO and CTO of Cyware Labs — for leading full website-revamp QA and impact that exceeded expectations of the role.",
     accent: BRASS,
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -156,27 +162,43 @@ const ACHIEVEMENTS = [
 
 const SKILLS = [
   {
-    group: "Automation",
+    group: "Languages",
     accent: BRASS,
-    items: ["Python", "Pytest", "Selenium", "Playwright", "REST API"],
+    items: ["Python", "Java", "SQL"],
   },
   {
-    group: "CI / CD",
+    group: "Automation",
     accent: CYAN,
-    items: ["Jenkins", "GitHub Actions", "Docker"],
+    items: ["Pytest", "Selenium WebDriver", "TestNG", "Page Object Model", "RestAssured", "Hybrid Framework", "Data-Driven Framework"],
   },
   {
-    group: "Cloud & Tools",
+    group: "API & Validation",
     accent: "#8A93A3",
-    items: ["AWS", "Jira", "Git"],
+    items: ["REST API", "Postman", "OpenAPI / Swagger", "JSON Validation"],
+  },
+  {
+    group: "CI / CD & Infra",
+    accent: BRASS,
+    items: ["Jenkins", "Bitbucket Pipelines", "Docker", "AWS EC2", "Kubernetes (basics)", "Argo CD (basics)", "Git", "Allure"],
+  },
+  {
+    group: "Testing Types",
+    accent: CYAN,
+    items: ["Functional", "Regression", "Sanity", "Integration", "System", "Cross-browser", "Mobile (iOS & Android)", "API", "Email"],
+  },
+  {
+    group: "AI & Agile",
+    accent: "#8A93A3",
+    items: ["AI-assisted QE", "Claude", "Cursor", "Gemini", "Jira Rovo", "Agile / Scrum", "JIRA", "Confluence"],
   },
 ];
 
+/* "nearly 7 years" since Aug 2019 — never "7+" */
 const IMPACT = [
-  { to: 60, prefix: "~", suffix: "%", label: "regression cut" },
-  { to: 40, prefix: "~", suffix: "%", label: "CI flakiness cut" },
-  { to: 400, prefix: "",  suffix: "+", label: "tests automated" },
-  { to: 7,   prefix: "",  suffix: "+", label: "years in quality" },
+  { prefix: "~", to: 60, suffix: "%", label: "regression cut" },
+  { prefix: "~", to: 40, suffix: "%", label: "CI flakiness cut" },
+  { to: 400, prefix: "", suffix: "+", label: "tests automated" },
+  { prefix: "~", to: 7, suffix: "", label: "years in quality" },
 ];
 
 const fadeUp = {
@@ -205,6 +227,15 @@ export default function SdetContent() {
           style={{
             background:
               "radial-gradient(ellipse 55% 60% at 92% 15%, rgba(216,180,80,0.1), transparent 55%)",
+          }}
+        />
+        {/* Dark halo for hero text legibility */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 80% at 20% 50%, rgba(10,14,23,0.65) 0%, transparent 80%)",
           }}
         />
         <div className="relative mx-auto max-w-6xl px-6">
@@ -245,7 +276,7 @@ export default function SdetContent() {
             Senior SDET at Cyware Labs — building Python/Pytest frameworks and
             CI pipelines for cybersecurity products. Nearly seven years across
             cybersecurity, banking, fintech, logistics, and edtech, all under
-            Test Yantra Software Solutions since 2019.
+            Test Yantra Software Solutions since Aug 2019.
           </motion.p>
         </div>
       </section>
@@ -384,7 +415,7 @@ export default function SdetContent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.55, delay: i * 0.1 }}
-                className="flex items-start gap-4 rounded-xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-sm"
+                className="flex items-start gap-4 rounded-xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.07)]"
               >
                 <div
                   className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
@@ -424,7 +455,7 @@ export default function SdetContent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm"
+                className="rounded-2xl border border-white/10 bg-white/[0.05] p-6 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_4px_20px_rgba(0,0,0,0.2)] transition-colors hover:border-white/20"
               >
                 <div className="mb-4 flex items-center gap-2">
                   <div
@@ -482,7 +513,7 @@ export default function SdetContent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="rounded-xl border border-white/10 bg-white/[0.04] px-5 py-8 text-center backdrop-blur-sm"
+                className="rounded-xl border border-white/10 bg-white/[0.05] px-5 py-8 text-center backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.07)]"
               >
                 <div
                   style={{ fontFamily: "var(--font-serif)", color: BRASS }}

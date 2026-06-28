@@ -125,11 +125,12 @@ function Counter({
 
 /* ── Data ───────────────────────────────────────────────────────────────── */
 
+/* "nearly 7 years" — experience since Aug 2019. Never "7+" */
 const METRICS = [
-  { to: 7, suffix: "+", label: "years in quality" },
+  { prefix: "~", to: 7, suffix: "", label: "years in quality" },
   { to: 4, suffix: "", label: "domains mastered" },
-  { to: 60, prefix: "~", suffix: "%", label: "regression cut" },
-  { to: 40, prefix: "~", suffix: "%", label: "CI flakiness cut" },
+  { prefix: "~", to: 60, suffix: "%", label: "regression cut" },
+  { prefix: "~", to: 40, suffix: "%", label: "CI flakiness cut" },
   { to: 30000, suffix: "+", label: "students reached", locale: true },
   { to: 22, suffix: "", label: "member branch led" },
 ] as const;
@@ -144,11 +145,11 @@ const CAREER_CARDS = [
         <polyline points="8 6 2 12 8 18" />
       </svg>
     ),
-    body: "7+ years shipping test automation across fintech, healthcare, and SaaS platforms. I build frameworks that scale — not just tests that pass.",
+    body: "Nearly seven years shipping test automation across cybersecurity, banking, fintech, logistics, and edtech. Frameworks that scale — not just tests that pass.",
     bullets: [
-      "Selenium · Playwright · Cypress · RestAssured",
-      "Jenkins · GitHub Actions · Docker · CI pipelines",
-      "~60% regression cost cut  ·  ~40% CI flakiness cut",
+      "Python/Pytest · Selenium · Java/TestNG · RestAssured",
+      "Jenkins · Bitbucket Pipelines · Docker · AWS EC2",
+      "~60% regression cut  ·  ~40% CI flakiness cut",
     ],
   },
   {
@@ -165,8 +166,8 @@ const CAREER_CARDS = [
     body: "Teaching and testing ran in parallel — 30,000+ students across live and recorded programmes while building automation frameworks professionally.",
     bullets: [
       "30,000+ students  ·  live & recorded formats",
-      "Manual QA · Selenium · Interview prep",
-      "Branch founder & technical lead",
+      "Manual QA · Selenium · SQL · Interview prep",
+      "Branch Head, Mumbai — 22-member team",
     ],
   },
 ];
@@ -185,8 +186,8 @@ export default function Page() {
           id="hero"
           className="relative flex min-h-screen items-center"
         >
-          {/* legibility veil — strong left, fades right so the 3D breathes */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0A0E17]/90 via-[#0A0E17]/50 to-transparent" />
+          {/* Legibility veil — strong left, fades right so the 3D breathes */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0A0E17]/90 via-[#0A0E17]/55 to-[#0A0E17]/20" />
 
           <div className="relative mx-auto w-full max-w-6xl px-6">
             <motion.p
@@ -244,9 +245,10 @@ export default function Page() {
               custom={3}
               className="mt-7 max-w-xl text-lg leading-relaxed text-white/65"
             >
-              I&apos;m Varun — a Senior SDET who has been testing professionally
-              since 2019, and teaching for just as long. I build automation that
-              catches what people miss, and I&apos;ve never stopped explaining how.
+              I&apos;m Varun — a Senior SDET with nearly seven years of
+              professional testing since 2019, and just as long teaching.
+              I build automation that catches what people miss, and I&apos;ve
+              never stopped explaining how.
             </motion.p>
 
             <motion.div
@@ -277,7 +279,7 @@ export default function Page() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.6, delay: i * 0.08 }}
-                  className="rounded-xl border border-white/10 bg-white/[0.04] backdrop-blur-sm px-4 py-6 text-center"
+                  className="rounded-xl border border-white/10 bg-white/[0.05] backdrop-blur-sm px-4 py-6 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.07)] transition-colors hover:border-white/20"
                 >
                   <div
                     style={{ fontFamily: "var(--font-serif)" }}
@@ -300,17 +302,28 @@ export default function Page() {
         {/* ── CAREER SNAPSHOT ──────────────────────────────────────────── */}
         <section id="career" className="relative py-20">
           <div className="mx-auto max-w-6xl px-6">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.7 }}
-              style={{ fontFamily: "var(--font-serif)" }}
-              className="mb-10 text-4xl tracking-tight sm:text-5xl"
-            >
-              Two careers,{" "}
-              <span className="italic text-[#D8B450]">one philosophy.</span>
-            </motion.h2>
+            {/* Dark halo behind section heading */}
+            <div className="relative">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -inset-x-6 -top-4 bottom-0 rounded-2xl"
+                style={{
+                  background:
+                    "radial-gradient(ellipse 70% 60% at 30% 30%, rgba(10,14,23,0.55) 0%, transparent 80%)",
+                }}
+              />
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.7 }}
+                style={{ fontFamily: "var(--font-serif)" }}
+                className="relative mb-10 text-4xl tracking-tight sm:text-5xl"
+              >
+                Two careers,{" "}
+                <span className="italic text-[#D8B450]">one philosophy.</span>
+              </motion.h2>
+            </div>
 
             <div className="grid gap-6 md:grid-cols-2">
               {CAREER_CARDS.map((card, i) => (
@@ -320,7 +333,7 @@ export default function Page() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.7, delay: i * 0.12 }}
-                  className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-8"
+                  className="rounded-2xl border border-white/10 bg-white/[0.05] backdrop-blur-sm p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_4px_24px_rgba(0,0,0,0.25)] transition-colors hover:border-white/20"
                 >
                   <div className="mb-5 flex items-center gap-3">
                     <div
@@ -368,7 +381,7 @@ export default function Page() {
                 transition={{ duration: 0.8 }}
                 className="mx-auto w-full max-w-xs md:mx-0"
               >
-                <div className="aspect-[3/4] w-full rounded-2xl border border-white/10 bg-white/[0.04] flex flex-col items-center justify-center gap-3 text-white/25">
+                <div className="aspect-[3/4] w-full rounded-2xl border border-white/10 bg-white/[0.04] flex flex-col items-center justify-center gap-3 text-white/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
                   <svg
                     width="48"
                     height="48"
@@ -393,30 +406,40 @@ export default function Page() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.8, delay: 0.1 }}
+                className="relative"
               >
-                <p className="mb-3 text-xs uppercase tracking-[0.22em] text-[#38BDF8]">
+                {/* Dark halo behind bio text */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -inset-6 rounded-2xl"
+                  style={{
+                    background:
+                      "radial-gradient(ellipse 90% 90% at 60% 50%, rgba(10,14,23,0.5) 0%, transparent 85%)",
+                  }}
+                />
+                <p className="relative mb-3 text-xs uppercase tracking-[0.22em] text-[#38BDF8]">
                   About
                 </p>
                 <h2
                   style={{ fontFamily: "var(--font-serif)" }}
-                  className="mb-5 text-4xl tracking-tight sm:text-5xl"
+                  className="relative mb-5 text-4xl tracking-tight sm:text-5xl"
                 >
                   From the classroom
                   <br />
                   <span className="italic text-[#D8B450]">to the codebase.</span>
                 </h2>
-                <p className="mb-4 text-base leading-relaxed text-white/60">
+                <p className="relative mb-4 text-base leading-relaxed text-white/60">
                   Nearly seven years in quality engineering since 2019 — across
                   cybersecurity, banking, fintech, logistics, and edtech. For most of
                   that time I was also in classrooms: teaching 30,000+ students to
                   test software at QSpider while building automation frameworks
                   professionally. Not one after the other — both at once.
                 </p>
-                <p className="mb-8 text-base leading-relaxed text-white/60">
+                <p className="relative mb-8 text-base leading-relaxed text-white/60">
                   Today I&apos;m a Senior SDET at Cyware Labs, working on
                   Python/Pytest suites and CI pipelines for cybersecurity products.
                   I&apos;ve added AI-assisted testing to the mix — Claude, Cursor,
-                  Gemini — and I still explain everything I build.
+                  Gemini, Jira Rovo — and I still explain everything I build.
                 </p>
                 <MagneticButton href="/contact" variant="solid">
                   Get in touch
@@ -429,6 +452,15 @@ export default function Page() {
         {/* ── CTA STRIP ────────────────────────────────────────────────── */}
         <section id="cta" className="relative py-20 border-t border-b border-white/[0.07]">
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#D8B450]/[0.04] via-transparent to-[#38BDF8]/[0.04]" />
+          {/* Dark halo for CTA text legibility */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 55% 80% at 50% 50%, rgba(10,14,23,0.55) 0%, transparent 85%)",
+            }}
+          />
           <div className="relative mx-auto max-w-6xl px-6 text-center">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -473,7 +505,16 @@ export default function Page() {
 
         {/* ── CONTACT ──────────────────────────────────────────────────── */}
         <section id="contact" className="relative py-28">
-          <div className="mx-auto max-w-6xl px-6 text-center">
+          {/* Dark halo for contact CTA text */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 50% 70% at 50% 50%, rgba(10,14,23,0.50) 0%, transparent 80%)",
+            }}
+          />
+          <div className="relative mx-auto max-w-6xl px-6 text-center">
             <h2
               style={{ fontFamily: "var(--font-serif)" }}
               className="text-4xl tracking-tight sm:text-5xl"

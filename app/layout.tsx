@@ -27,7 +27,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Varun M — Senior SDET · QA Automation Engineer",
   description:
-    "Senior SDET and QA Automation Engineer in Bengaluru. 7+ years building dependable software — a former trainer who believes the best engineers are teachers.",
+    "Senior SDET and QA Automation Engineer in Bengaluru. Nearly 7 years building dependable software — a former trainer who believes the best engineers are teachers.",
   openGraph: {
     title: "Varun M — Quality, by design.",
     description: "From the classroom to the codebase. Senior SDET · QA Automation Engineer.",

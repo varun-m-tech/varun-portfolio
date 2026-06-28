@@ -3,14 +3,22 @@
 import { type ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
+/* Real stack only — no invented tools */
 const STACK = [
   "Python",
+  "Java",
+  "SQL",
+  "Selenium",
   "Pytest",
-  "REST API validation",
-  "Jenkins pipelines",
-  "AWS environments",
+  "TestNG",
+  "REST API",
+  "RestAssured",
+  "Jenkins",
   "Docker",
-  "UI / API workflows",
+  "AWS",
+  "Git",
+  "Jira",
+  "AI-assisted QE",
 ];
 
 const reveal = {
@@ -32,9 +40,9 @@ function Chip({ children }: { children: ReactNode }) {
 
 export default function TechStack() {
   const reduce = useReducedMotion();
-  const SIZE = 460; // orbit box (px)
-  const R = 168; // ring radius (px)
-  const SPIN = 44; // seconds per revolution
+  const SIZE = 500;
+  const R = 195;
+  const SPIN = 52;
   const c = SIZE / 2;
 
   return (
@@ -45,30 +53,39 @@ export default function TechStack() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
-          className="max-w-2xl"
+          className="relative max-w-2xl"
         >
-          <p className="mb-4 text-xs uppercase tracking-[0.28em] text-[#E8B84B]">The craft</p>
+          {/* Dark halo behind heading text */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -inset-x-8 -inset-y-6 rounded-2xl"
+            style={{
+              background:
+                "radial-gradient(ellipse 85% 120% at 40% 50%, rgba(10,14,23,0.65) 0%, transparent 100%)",
+            }}
+          />
+          <p className="relative mb-4 text-xs uppercase tracking-[0.28em] text-[#E8B84B]">The craft</p>
           <h2
             style={{ fontFamily: "var(--font-serif)" }}
-            className="text-4xl leading-tight tracking-tight sm:text-5xl"
+            className="relative text-4xl leading-tight tracking-tight sm:text-5xl"
           >
             Then I made quality <span className="italic text-[#E8B84B]">my craft.</span>
           </h2>
-          <p className="mt-5 text-white/60">
-            Senior SDET · QA Automation Engineer — designing Python-Pytest frameworks, REST API
-            validation, Jenkins pipelines and AWS environments that keep releases dependable.
+          <p className="relative mt-5 text-white/60">
+            Senior SDET · QA Automation Engineer — designing Python/Pytest frameworks, REST API
+            validation, Jenkins pipelines, and Docker/AWS environments that keep releases dependable.
           </p>
         </motion.div>
 
-        {/* desktop: rotating orbit */}
+        {/* desktop: rotating orbit — larger radius to accommodate 14 chips */}
         <div
           className="relative mx-auto mt-16 hidden md:block"
           style={{ width: SIZE, height: SIZE }}
         >
-          {/* static rings + glowing core */}
+          {/* Static rings + glowing core */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="absolute h-[336px] w-[336px] rounded-full border border-white/10" />
-            <div className="absolute h-[230px] w-[230px] rounded-full border border-white/5" />
+            <div className="absolute h-[390px] w-[390px] rounded-full border border-white/10" />
+            <div className="absolute h-[270px] w-[270px] rounded-full border border-white/5" />
             <div className="relative flex h-28 w-28 flex-col items-center justify-center rounded-full border border-[#E8B84B]/30 bg-[#E8B84B]/10 backdrop-blur-md">
               <div className="absolute -z-10 h-32 w-32 rounded-full bg-[#E8B84B]/20 blur-2xl" />
               <span className="text-xs uppercase tracking-widest text-[#E8B84B]">Quality</span>
@@ -76,7 +93,7 @@ export default function TechStack() {
             </div>
           </div>
 
-          {/* rotating ring of chips */}
+          {/* Rotating ring of chips */}
           <motion.div
             className="absolute inset-0"
             animate={reduce ? {} : { rotate: 360 }}
@@ -92,7 +109,7 @@ export default function TechStack() {
                   className="absolute"
                   style={{ left: `${x}px`, top: `${y}px`, transform: "translate(-50%,-50%)" }}
                 >
-                  {/* counter-rotate so labels stay upright while the ring spins */}
+                  {/* Counter-rotate so labels stay upright while the ring spins */}
                   <motion.div
                     animate={reduce ? {} : { rotate: -360 }}
                     transition={{ duration: SPIN, ease: "linear", repeat: Infinity }}
@@ -106,7 +123,7 @@ export default function TechStack() {
           </motion.div>
         </div>
 
-        {/* mobile / reduced-motion: simple chip grid */}
+        {/* Mobile / reduced-motion: simple chip grid */}
         <div className="mt-12 flex flex-wrap gap-3 md:hidden">
           {STACK.map((t, i) => (
             <motion.div

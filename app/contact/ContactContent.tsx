@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 
 const BRASS = "#D8B450";
@@ -20,9 +21,47 @@ const fadeUp = {
 };
 
 const inputBase =
-  "w-full rounded-lg border border-white/[0.12] bg-white/[0.04] px-4 py-3 text-sm text-text outline-none transition-colors duration-150 placeholder:text-white/25 focus:border-[#D8B450]/60 focus:bg-white/[0.06]";
+  "w-full rounded-lg border border-white/[0.12] bg-white/[0.04] px-4 py-3 text-sm text-[#ECE7DD] outline-none transition-colors duration-150 placeholder:text-white/25 focus:border-[#D8B450]/60 focus:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-[#D8B450]/40";
+
+type FormStatus = "idle" | "loading" | "success" | "error";
 
 export default function ContactContent() {
+  const [status, setStatus] = useState<FormStatus>("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus("loading");
+    setErrorMsg("");
+
+    const form = e.currentTarget;
+    const data = {
+      access_key: "2137690b-3eae-44be-ad27-aef602e383d0",
+      name: (form.elements.namedItem("name") as HTMLInputElement).value,
+      email: (form.elements.namedItem("email") as HTMLInputElement).value,
+      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+    };
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setStatus("success");
+        form.reset();
+      } else {
+        setErrorMsg(json.message ?? "Submission failed. Please try again.");
+        setStatus("error");
+      }
+    } catch {
+      setErrorMsg("Network error. Please try again or email directly.");
+      setStatus("error");
+    }
+  }
+
   return (
     <main className="relative z-10 min-h-screen pt-24">
 
@@ -35,6 +74,15 @@ export default function ContactContent() {
             background:
               "radial-gradient(ellipse 55% 60% at 90% 15%, rgba(56,189,248,0.09), transparent 55%)," +
               "radial-gradient(ellipse 40% 45% at 10% 85%, rgba(216,180,80,0.07), transparent 55%)",
+          }}
+        />
+        {/* Dark halo for hero text */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 65% 85% at 20% 50%, rgba(10,14,23,0.65) 0%, transparent 80%)",
           }}
         />
         <div className="relative mx-auto max-w-6xl px-6">
@@ -96,85 +144,143 @@ export default function ContactContent() {
                 Send a message
               </h2>
 
-              <form
-                action="mailto:varunm.work1@gmail.com"
-                method="POST"
-                encType="text/plain"
-                className="space-y-5"
-              >
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="mb-2 block text-xs font-medium uppercase tracking-[0.2em]"
-                    style={{ color: BRASS, fontFamily: "var(--font-mono)" }}
+              {/* ── SUCCESS STATE ── */}
+              {status === "success" ? (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="rounded-2xl border border-white/10 bg-white/[0.04] p-8 text-center backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.07)]"
+                >
+                  <div
+                    className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full"
+                    style={{ background: `${BRASS}20`, color: BRASS }}
                   >
-                    Name
-                  </label>
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    required
-                    autoComplete="name"
-                    placeholder="Your name"
-                    className={inputBase}
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="mb-2 block text-xs font-medium uppercase tracking-[0.2em]"
-                    style={{ color: BRASS, fontFamily: "var(--font-mono)" }}
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    autoComplete="email"
-                    placeholder="your@email.com"
-                    className={inputBase}
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="mb-2 block text-xs font-medium uppercase tracking-[0.2em]"
-                    style={{ color: BRASS, fontFamily: "var(--font-mono)" }}
-                  >
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={7}
-                    required
-                    placeholder="What's on your mind?"
-                    className={`${inputBase} resize-y`}
-                    style={{ minHeight: "9rem" }}
-                  />
-                </div>
-
-                <div className="pt-1">
-                  <button
-                    type="submit"
-                    className="inline-flex items-center justify-center rounded-full px-10 py-3.5 text-sm font-medium tracking-wide transition-all duration-200 active:scale-95 hover:opacity-90 sm:w-auto w-full"
-                    style={{ background: BRASS, color: "#0A0E17" }}
-                  >
-                    Send message
-                  </button>
-                  <p
-                    className="mt-3 text-xs text-white/30"
-                    style={{ fontFamily: "var(--font-mono)" }}
-                  >
-                    Opens your email client with the message pre-filled.
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </div>
+                  <h3 style={{ fontFamily: "var(--font-serif)" }} className="mb-2 text-2xl tracking-tight">
+                    Message sent!
+                  </h3>
+                  <p className="mb-6 text-sm" style={{ color: TEXT }}>
+                    Thanks for reaching out. I typically reply within 24 hours.
                   </p>
-                </div>
-              </form>
+                  <button
+                    onClick={() => setStatus("idle")}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-2.5 text-sm text-[#ECE7DD] transition-colors hover:border-[#D8B450]/60 hover:text-white focus-visible:ring-2 focus-visible:ring-[#D8B450]/70 outline-none"
+                  >
+                    Send another
+                  </button>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="mb-2 block text-xs font-medium uppercase tracking-[0.2em]"
+                      style={{ color: BRASS, fontFamily: "var(--font-mono)" }}
+                    >
+                      Name
+                    </label>
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      required
+                      autoComplete="name"
+                      placeholder="Your name"
+                      className={inputBase}
+                      disabled={status === "loading"}
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="mb-2 block text-xs font-medium uppercase tracking-[0.2em]"
+                      style={{ color: BRASS, fontFamily: "var(--font-mono)" }}
+                    >
+                      Email
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      autoComplete="email"
+                      placeholder="your@email.com"
+                      className={inputBase}
+                      disabled={status === "loading"}
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="message"
+                      className="mb-2 block text-xs font-medium uppercase tracking-[0.2em]"
+                      style={{ color: BRASS, fontFamily: "var(--font-mono)" }}
+                    >
+                      Message
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows={7}
+                      required
+                      placeholder="What's on your mind?"
+                      className={`${inputBase} resize-y`}
+                      style={{ minHeight: "9rem" }}
+                      disabled={status === "loading"}
+                    />
+                  </div>
+
+                  {/* Error message */}
+                  {status === "error" && errorMsg && (
+                    <motion.p
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300"
+                      role="alert"
+                    >
+                      {errorMsg}
+                    </motion.p>
+                  )}
+
+                  <div className="pt-1">
+                    <button
+                      type="submit"
+                      disabled={status === "loading"}
+                      className="inline-flex min-h-[44px] w-full items-center justify-center gap-2.5 rounded-full px-10 py-3.5 text-sm font-medium tracking-wide transition-all duration-200 active:scale-95 hover:opacity-90 sm:w-auto focus-visible:ring-2 focus-visible:ring-[#D8B450]/70 outline-none disabled:opacity-60 disabled:cursor-not-allowed"
+                      style={{ background: BRASS, color: "#0A0E17" }}
+                    >
+                      {status === "loading" ? (
+                        <>
+                          <svg
+                            className="h-4 w-4 animate-spin"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            aria-hidden
+                          >
+                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                          </svg>
+                          Sending…
+                        </>
+                      ) : (
+                        "Send message"
+                      )}
+                    </button>
+                    <p
+                      className="mt-3 text-xs text-white/30"
+                      style={{ fontFamily: "var(--font-mono)" }}
+                    >
+                      Powered by Web3Forms · No spam, ever.
+                    </p>
+                  </div>
+                </form>
+              )}
             </motion.div>
 
             {/* ── SIDEBAR ───────────────────────────────────────────── */}
@@ -194,7 +300,7 @@ export default function ContactContent() {
               {/* Email */}
               <a
                 href="mailto:varunm.work1@gmail.com"
-                className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-5 transition-all duration-200 hover:border-[#D8B450]/40 hover:bg-white/[0.07]"
+                className="flex min-h-[56px] items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-5 transition-all duration-200 hover:border-[#D8B450]/40 hover:bg-white/[0.07] focus-visible:ring-2 focus-visible:ring-[#D8B450]/70 outline-none"
               >
                 <div
                   className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
@@ -222,7 +328,7 @@ export default function ContactContent() {
                   >
                     Email
                   </p>
-                  <p className="mt-0.5 text-sm font-medium text-text">
+                  <p className="mt-0.5 text-sm font-medium text-[#ECE7DD]">
                     varunm.work1@gmail.com
                   </p>
                 </div>
@@ -233,7 +339,7 @@ export default function ContactContent() {
                 href="https://linkedin.com/in/varun-m-78a106294"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-5 transition-all duration-200 hover:border-[#38BDF8]/40 hover:bg-white/[0.07]"
+                className="flex min-h-[56px] items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-5 transition-all duration-200 hover:border-[#38BDF8]/40 hover:bg-white/[0.07] focus-visible:ring-2 focus-visible:ring-[#38BDF8]/50 outline-none"
               >
                 <div
                   className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
@@ -258,7 +364,7 @@ export default function ContactContent() {
                   >
                     LinkedIn
                   </p>
-                  <p className="mt-0.5 text-sm font-medium text-text">
+                  <p className="mt-0.5 text-sm font-medium text-[#ECE7DD]">
                     varun-m-78a106294
                   </p>
                 </div>
@@ -289,7 +395,7 @@ export default function ContactContent() {
                     Location
                   </span>
                 </div>
-                <p className="text-base font-medium text-text">
+                <p className="text-base font-medium text-[#ECE7DD]">
                   Bengaluru, India
                 </p>
                 <p className="mt-1 text-sm" style={{ color: TEXT }}>
