@@ -157,7 +157,7 @@ const ACHIEVEMENTS: {
     ),
   },
   {
-    title: "H-1B Approved through 2028",
+    title: "🇺🇸 H-1B Approved through 2028",
     body: "US work authorisation approved and valid through 2028, enabling engagements with US-headquartered clients.",
     accent: CYAN,
     icon: (

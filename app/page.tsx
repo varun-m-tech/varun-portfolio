@@ -2,6 +2,7 @@
 
 import { type MouseEvent, type ReactNode, useEffect, useRef, useState } from "react";
 import { motion, animate, useMotionValue, useSpring } from "framer-motion";
+import Image from "next/image";
 import SecureMesh from "@/components/SecureMesh";
 import PhilosophySection from "@/components/PhilosophySection";
 import TechStack from "@/components/TechStack";
@@ -125,7 +126,7 @@ function Counter({
 
 /* ── Data ───────────────────────────────────────────────────────────────── */
 
-/* "nearly 7 years" — experience since Aug 2019. Never "7+" */
+/* "nearly 7 years" since Aug 2019 — never "7+" */
 const METRICS = [
   { prefix: "~", to: 7, suffix: "", label: "years in quality" },
   { to: 4, suffix: "", label: "domains mastered" },
@@ -172,6 +173,23 @@ const CAREER_CARDS = [
   },
 ];
 
+/* ── Shared dark-halo overlay for section heading areas ─────────────────── */
+function SectionHalo({ children }: { children: ReactNode }) {
+  return (
+    <div className="relative">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-x-6 -top-6 bottom-0 rounded-3xl"
+        style={{
+          background:
+            "radial-gradient(ellipse 75% 100% at 30% 30%, rgba(10,14,23,0.65) 0%, transparent 80%)",
+        }}
+      />
+      <div className="relative">{children}</div>
+    </div>
+  );
+}
+
 /* ── Page ───────────────────────────────────────────────────────────────── */
 export default function Page() {
   return (
@@ -186,85 +204,112 @@ export default function Page() {
           id="hero"
           className="relative flex min-h-screen items-center"
         >
-          {/* Legibility veil — strong left, fades right so the 3D breathes */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0A0E17]/90 via-[#0A0E17]/55 to-[#0A0E17]/20" />
+          {/* Legibility veil — strong left, fades right */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0A0E17]/95 via-[#0A0E17]/70 to-[#0A0E17]/30" />
 
-          <div className="relative mx-auto w-full max-w-6xl px-6">
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              custom={0}
-              className="mb-6 text-xs uppercase tracking-[0.28em] text-[#D8B450]"
-            >
-              Senior SDET · QA Automation · Bangalore, India
-            </motion.p>
+          <div className="relative mx-auto w-full max-w-6xl px-6 py-24">
+            <div className="grid items-center gap-12 lg:grid-cols-[1fr_320px]">
 
-            <motion.h1
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              custom={1}
-              style={{ fontFamily: "var(--font-serif)" }}
-              className="text-5xl font-semibold leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl"
-            >
-              Quality,
-              <br />
-              <span className="italic text-[#D8B450]">by design.</span>
-            </motion.h1>
+              {/* Text column */}
+              <div>
+                <motion.p
+                  variants={fadeUp}
+                  initial="hidden"
+                  animate="show"
+                  custom={0}
+                  className="mb-6 text-xs uppercase tracking-[0.28em] text-[#D8B450]"
+                >
+                  Senior SDET · QA Automation · Bangalore, India
+                </motion.p>
 
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              custom={2}
-              className="mt-4 text-xs text-white/35"
-              style={{ fontFamily: "var(--font-mono)" }}
-            >
-              <a
-                href="mailto:varunm.work1@gmail.com"
-                className="transition-colors hover:text-white/60"
+                <motion.h1
+                  variants={fadeUp}
+                  initial="hidden"
+                  animate="show"
+                  custom={1}
+                  style={{ fontFamily: "var(--font-serif)" }}
+                  className="text-5xl font-semibold leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl"
+                >
+                  Quality,
+                  <br />
+                  <span className="italic text-[#D8B450]">by design.</span>
+                </motion.h1>
+
+                <motion.p
+                  variants={fadeUp}
+                  initial="hidden"
+                  animate="show"
+                  custom={2}
+                  className="mt-4 text-xs text-white/35"
+                  style={{ fontFamily: "var(--font-mono)" }}
+                >
+                  <a
+                    href="mailto:varunm.work1@gmail.com"
+                    className="transition-colors hover:text-white/60"
+                  >
+                    varunm.work1@gmail.com
+                  </a>
+                  {" · "}
+                  <a
+                    href="https://linkedin.com/in/varun-m-78a106294"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-white/60"
+                  >
+                    linkedin.com/in/varun-m-78a106294
+                  </a>
+                </motion.p>
+
+                <motion.p
+                  variants={fadeUp}
+                  initial="hidden"
+                  animate="show"
+                  custom={3}
+                  className="mt-7 max-w-xl text-lg leading-relaxed text-white/70"
+                >
+                  I&apos;m Varun — a Senior SDET with nearly seven years of
+                  professional testing since 2019, and just as long teaching.
+                  I build automation that catches what people miss, and I&apos;ve
+                  never stopped explaining how.
+                </motion.p>
+
+                <motion.div
+                  variants={fadeUp}
+                  initial="hidden"
+                  animate="show"
+                  custom={4}
+                  className="mt-9 flex flex-wrap gap-4"
+                >
+                  <MagneticButton href="/sdet" variant="solid">
+                    View Work
+                  </MagneticButton>
+                  <MagneticButton href="/resume" variant="ghost">
+                    Résumé
+                  </MagneticButton>
+                </motion.div>
+              </div>
+
+              {/* Hero portrait — desktop only */}
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="hidden lg:block"
               >
-                varunm.work1@gmail.com
-              </a>
-              {" · "}
-              <a
-                href="https://linkedin.com/in/varun-m-78a106294"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-colors hover:text-white/60"
-              >
-                linkedin.com/in/varun-m-78a106294
-              </a>
-            </motion.p>
+                <div className="relative h-[460px] w-full overflow-hidden rounded-2xl border border-white/10 shadow-[0_0_60px_rgba(216,180,80,0.07),inset_0_1px_0_rgba(255,255,255,0.07)]">
+                  <Image
+                    src="/assets/home-hero.webp"
+                    alt="Varun M — Senior SDET"
+                    fill
+                    className="object-cover object-top"
+                    priority
+                  />
+                  {/* Subtle bottom gradient for text separation */}
+                  <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-[#0A0E17]/60 to-transparent" />
+                </div>
+              </motion.div>
 
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              custom={3}
-              className="mt-7 max-w-xl text-lg leading-relaxed text-white/65"
-            >
-              I&apos;m Varun — a Senior SDET with nearly seven years of
-              professional testing since 2019, and just as long teaching.
-              I build automation that catches what people miss, and I&apos;ve
-              never stopped explaining how.
-            </motion.p>
-
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              custom={4}
-              className="mt-9 flex flex-wrap gap-4"
-            >
-              <MagneticButton href="/sdet" variant="solid">
-                View Work
-              </MagneticButton>
-              <MagneticButton href="/resume" variant="ghost">
-                Résumé
-              </MagneticButton>
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -279,7 +324,7 @@ export default function Page() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.6, delay: i * 0.08 }}
-                  className="rounded-xl border border-white/10 bg-white/[0.05] backdrop-blur-sm px-4 py-6 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.07)] transition-colors hover:border-white/20"
+                  className="rounded-xl border border-white/10 bg-white/[0.06] backdrop-blur-sm px-4 py-6 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.07)] transition-colors hover:border-white/20"
                 >
                   <div
                     style={{ fontFamily: "var(--font-serif)" }}
@@ -302,28 +347,19 @@ export default function Page() {
         {/* ── CAREER SNAPSHOT ──────────────────────────────────────────── */}
         <section id="career" className="relative py-20">
           <div className="mx-auto max-w-6xl px-6">
-            {/* Dark halo behind section heading */}
-            <div className="relative">
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -inset-x-6 -top-4 bottom-0 rounded-2xl"
-                style={{
-                  background:
-                    "radial-gradient(ellipse 70% 60% at 30% 30%, rgba(10,14,23,0.55) 0%, transparent 80%)",
-                }}
-              />
+            <SectionHalo>
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.7 }}
                 style={{ fontFamily: "var(--font-serif)" }}
-                className="relative mb-10 text-4xl tracking-tight sm:text-5xl"
+                className="mb-10 text-4xl tracking-tight sm:text-5xl"
               >
                 Two careers,{" "}
                 <span className="italic text-[#D8B450]">one philosophy.</span>
               </motion.h2>
-            </div>
+            </SectionHalo>
 
             <div className="grid gap-6 md:grid-cols-2">
               {CAREER_CARDS.map((card, i) => (
@@ -373,30 +409,32 @@ export default function Page() {
         <section id="about" className="relative py-20">
           <div className="mx-auto max-w-6xl px-6">
             <div className="grid items-center gap-14 md:grid-cols-2">
-              {/* Photo placeholder */}
+
+              {/* Photo column — real images */}
               <motion.div
                 initial={{ opacity: 0, x: -24 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.8 }}
-                className="mx-auto w-full max-w-xs md:mx-0"
+                className="relative mx-auto w-full max-w-xs md:mx-0"
               >
-                <div className="aspect-[3/4] w-full rounded-2xl border border-white/10 bg-white/[0.04] flex flex-col items-center justify-center gap-3 text-white/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-                  <svg
-                    width="48"
-                    height="48"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden
-                  >
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
-                  <span className="text-xs tracking-wide">Photo coming soon</span>
+                {/* Primary portrait */}
+                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_8px_40px_rgba(0,0,0,0.35)]">
+                  <Image
+                    src="/assets/home-about-sidelook.webp"
+                    alt="Varun M — side-look portrait"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                {/* Secondary photo — inset bottom-right */}
+                <div className="absolute -bottom-5 -right-5 hidden h-36 w-28 overflow-hidden rounded-xl border border-white/15 shadow-[0_4px_24px_rgba(0,0,0,0.4)] sm:block">
+                  <Image
+                    src="/assets/home-secondary.webp"
+                    alt="Varun M — secondary portrait"
+                    fill
+                    className="object-cover"
+                  />
                 </div>
               </motion.div>
 
@@ -408,13 +446,12 @@ export default function Page() {
                 transition={{ duration: 0.8, delay: 0.1 }}
                 className="relative"
               >
-                {/* Dark halo behind bio text */}
                 <div
                   aria-hidden
                   className="pointer-events-none absolute -inset-6 rounded-2xl"
                   style={{
                     background:
-                      "radial-gradient(ellipse 90% 90% at 60% 50%, rgba(10,14,23,0.5) 0%, transparent 85%)",
+                      "radial-gradient(ellipse 90% 90% at 60% 50%, rgba(10,14,23,0.55) 0%, transparent 85%)",
                   }}
                 />
                 <p className="relative mb-3 text-xs uppercase tracking-[0.22em] text-[#38BDF8]">
@@ -428,14 +465,14 @@ export default function Page() {
                   <br />
                   <span className="italic text-[#D8B450]">to the codebase.</span>
                 </h2>
-                <p className="relative mb-4 text-base leading-relaxed text-white/60">
+                <p className="relative mb-4 text-base leading-relaxed text-white/65">
                   Nearly seven years in quality engineering since 2019 — across
                   cybersecurity, banking, fintech, logistics, and edtech. For most of
                   that time I was also in classrooms: teaching 30,000+ students to
                   test software at QSpider while building automation frameworks
                   professionally. Not one after the other — both at once.
                 </p>
-                <p className="relative mb-8 text-base leading-relaxed text-white/60">
+                <p className="relative mb-8 text-base leading-relaxed text-white/65">
                   Today I&apos;m a Senior SDET at Cyware Labs, working on
                   Python/Pytest suites and CI pipelines for cybersecurity products.
                   I&apos;ve added AI-assisted testing to the mix — Claude, Cursor,
@@ -452,13 +489,12 @@ export default function Page() {
         {/* ── CTA STRIP ────────────────────────────────────────────────── */}
         <section id="cta" className="relative py-20 border-t border-b border-white/[0.07]">
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#D8B450]/[0.04] via-transparent to-[#38BDF8]/[0.04]" />
-          {/* Dark halo for CTA text legibility */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "radial-gradient(ellipse 55% 80% at 50% 50%, rgba(10,14,23,0.55) 0%, transparent 85%)",
+                "radial-gradient(ellipse 60% 90% at 50% 50%, rgba(10,14,23,0.65) 0%, transparent 85%)",
             }}
           />
           <div className="relative mx-auto max-w-6xl px-6 text-center">
@@ -478,7 +514,7 @@ export default function Page() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="mx-auto mb-9 max-w-md text-white/55"
+              className="mx-auto mb-9 max-w-md text-white/60"
             >
               Explore my engineering work, or grab a copy of my résumé.
             </motion.p>
@@ -505,13 +541,12 @@ export default function Page() {
 
         {/* ── CONTACT ──────────────────────────────────────────────────── */}
         <section id="contact" className="relative py-28">
-          {/* Dark halo for contact CTA text */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "radial-gradient(ellipse 50% 70% at 50% 50%, rgba(10,14,23,0.50) 0%, transparent 80%)",
+                "radial-gradient(ellipse 55% 75% at 50% 50%, rgba(10,14,23,0.60) 0%, transparent 80%)",
             }}
           />
           <div className="relative mx-auto max-w-6xl px-6 text-center">
@@ -522,7 +557,7 @@ export default function Page() {
               Let&apos;s build something{" "}
               <span className="italic text-[#D8B450]">dependable.</span>
             </h2>
-            <p className="mx-auto mt-5 max-w-md text-white/55">
+            <p className="mx-auto mt-5 max-w-md text-white/60">
               Open to conversations about quality engineering, automation, and
               training.
             </p>

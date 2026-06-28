@@ -116,21 +116,21 @@ function MeshScene() {
 
   return (
     <group ref={groupRef}>
-      {/* Edge network — opacity reduced ~35% from original 0.20 */}
+      {/* Edges — opacity ~35% lower than original, then another ~20% lower */}
       <lineSegments geometry={lineGeo}>
-        <lineBasicMaterial color={CYAN} transparent opacity={0.13} />
+        <lineBasicMaterial color={CYAN} transparent opacity={0.10} />
       </lineSegments>
 
-      {/* Nodes — opacity reduced ~35% from original 1.0 */}
+      {/* Nodes — emissiveIntensity reduced ~55% total from original (1.8→0.90, 2.6→1.30) */}
       {NODES.map((n, i) => (
         <mesh key={i} position={n.pos}>
           <sphereGeometry args={[n.size, 7, 7]} />
           <meshStandardMaterial
             color={n.color}
             emissive={n.color}
-            emissiveIntensity={n.color === BRASS ? 1.17 : 1.69}
+            emissiveIntensity={n.color === BRASS ? 0.90 : 1.30}
             transparent
-            opacity={0.65}
+            opacity={0.55}
           />
         </mesh>
       ))}
@@ -138,28 +138,20 @@ function MeshScene() {
   );
 }
 
-/* ── Static SVG mesh fallback (mobile / reduced-motion / no WebGL) ────────
-   Uses the same NODES/EDGES data projected orthographically to 2-D.
-   No animation, no scripts — just a dimmed vector mesh.
-   TODO: replace with a self-hosted animated SVG if more visual richness is needed.
-*/
+/* ── Static SVG mesh fallback (mobile / reduced-motion / no WebGL) ───────── */
 function StaticFallback() {
   return (
     <div aria-hidden className="absolute inset-0">
-      {/* Base colour */}
       <div className="absolute inset-0" style={{ background: "#0A0E17" }} />
-
-      {/* Soft colour halos */}
       <div
         className="absolute inset-0"
         style={{
           background: [
-            "radial-gradient(ellipse 60% 55% at 80% 20%, rgba(216,180,80,0.10) 0%, transparent 60%)",
-            "radial-gradient(ellipse 55% 60% at 20% 80%, rgba(56,189,248,0.08) 0%, transparent 60%)",
+            "radial-gradient(ellipse 60% 55% at 80% 20%, rgba(216,180,80,0.08) 0%, transparent 60%)",
+            "radial-gradient(ellipse 55% 60% at 20% 80%, rgba(56,189,248,0.06) 0%, transparent 60%)",
           ].join(","),
         }}
       />
-
       {/* Static SVG mesh — lightweight, no WebGL, no animation */}
       <svg
         className="absolute inset-0 h-full w-full"
@@ -168,7 +160,6 @@ function StaticFallback() {
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden
       >
-        {/* Edges */}
         {EDGES.map(([i, j], k) => (
           <line
             key={k}
@@ -178,10 +169,9 @@ function StaticFallback() {
             y2={SVG_NODES[j].y}
             stroke={CYAN}
             strokeWidth="0.15"
-            strokeOpacity="0.22"
+            strokeOpacity="0.18"
           />
         ))}
-        {/* Nodes */}
         {SVG_NODES.map((n, i) => (
           <circle
             key={i}
@@ -189,7 +179,7 @@ function StaticFallback() {
             cy={n.y}
             r={n.r}
             fill={n.color}
-            fillOpacity="0.40"
+            fillOpacity="0.32"
           />
         ))}
       </svg>
@@ -230,12 +220,12 @@ export default function SecureMesh() {
           dpr={[1, 1.5]}
           gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
         >
-          <ambientLight intensity={0.15} />
-          <pointLight position={[4, 2, 6]} intensity={1.5} color={BRASS} />
-          <pointLight position={[-4, -2, -5]} intensity={1.0} color={CYAN} />
+          <ambientLight intensity={0.12} />
+          <pointLight position={[4, 2, 6]} intensity={1.0} color={BRASS} />
+          <pointLight position={[-4, -2, -5]} intensity={0.7} color={CYAN} />
           <MeshScene />
           <EffectComposer>
-            <Bloom luminanceThreshold={0.12} intensity={2.0} mipmapBlur />
+            <Bloom luminanceThreshold={0.15} intensity={1.5} mipmapBlur />
           </EffectComposer>
         </Canvas>
       )}

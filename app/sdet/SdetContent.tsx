@@ -2,6 +2,7 @@
 
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { motion, animate } from "framer-motion";
+import Image from "next/image";
 
 const BRASS = "#D8B450";
 const CYAN = "#38BDF8";
@@ -71,6 +72,23 @@ function Counter({
       {Math.round(val)}
       {suffix}
     </span>
+  );
+}
+
+/* ── Shared section-heading halo ────────────────────────────────────────── */
+function SectionHalo({ children }: { children: ReactNode }) {
+  return (
+    <div className="relative mb-10">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-x-6 -top-6 bottom-0 rounded-3xl"
+        style={{
+          background:
+            "radial-gradient(ellipse 75% 100% at 30% 30%, rgba(10,14,23,0.65) 0%, transparent 80%)",
+        }}
+      />
+      <div className="relative">{children}</div>
+    </div>
   );
 }
 
@@ -148,7 +166,7 @@ const ACHIEVEMENTS = [
     ),
   },
   {
-    title: "H-1B Approved through 2028",
+    title: "🇺🇸 H-1B Approved through 2028",
     body: "US work authorisation approved and valid through 2028, enabling engagements with US-headquartered clients.",
     accent: CYAN,
     icon: (
@@ -229,13 +247,12 @@ export default function SdetContent() {
               "radial-gradient(ellipse 55% 60% at 92% 15%, rgba(216,180,80,0.1), transparent 55%)",
           }}
         />
-        {/* Dark halo for hero text legibility */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 60% 80% at 20% 50%, rgba(10,14,23,0.65) 0%, transparent 80%)",
+              "radial-gradient(ellipse 65% 85% at 20% 50%, rgba(10,14,23,0.75) 0%, transparent 80%)",
           }}
         />
         <div className="relative mx-auto max-w-6xl px-6">
@@ -284,29 +301,30 @@ export default function SdetContent() {
       {/* ── ROLE TIMELINE ─────────────────────────────────────────── */}
       <section className="py-20">
         <div className="mx-auto max-w-4xl px-6">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            style={{ fontFamily: "var(--font-serif)" }}
-            className="mb-3 text-4xl tracking-tight sm:text-5xl"
-          >
-            Experience
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="mb-12 text-xs text-white/35"
-            style={{ fontFamily: "var(--font-mono)" }}
-          >
-            All positions under Test Yantra Software Solutions Pvt. Ltd. (Aug 2019 — Present)
-          </motion.p>
+          <SectionHalo>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              style={{ fontFamily: "var(--font-serif)" }}
+              className="mb-3 text-4xl tracking-tight sm:text-5xl"
+            >
+              Experience
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-xs text-white/35"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              All positions under Test Yantra Software Solutions Pvt. Ltd. (Aug 2019 — Present)
+            </motion.p>
+          </SectionHalo>
 
           <div className="relative">
-            {/* Vertical guide line */}
             <div
               aria-hidden
               className="pointer-events-none absolute left-3 top-3 w-px"
@@ -326,17 +344,12 @@ export default function SdetContent() {
                 transition={{ duration: 0.65, delay: i * 0.12 }}
                 className="relative flex gap-8 pb-14 last:pb-0"
               >
-                {/* Dot */}
                 <div className="shrink-0">
                   <div
                     className="mt-1 flex h-7 w-7 items-center justify-center rounded-full border bg-[#0A0E17]"
                     style={{
-                      borderColor: role.current
-                        ? BRASS
-                        : "rgba(255,255,255,0.15)",
-                      boxShadow: role.current
-                        ? `0 0 14px ${BRASS}55`
-                        : "none",
+                      borderColor: role.current ? BRASS : "rgba(255,255,255,0.15)",
+                      boxShadow: role.current ? `0 0 14px ${BRASS}55` : "none",
                     }}
                   >
                     <div
@@ -346,23 +359,15 @@ export default function SdetContent() {
                   </div>
                 </div>
 
-                {/* Content */}
                 <div className="flex-1 pb-2">
                   <div className="mb-1 flex flex-wrap items-center gap-3">
-                    <span
-                      style={{ fontFamily: "var(--font-serif)" }}
-                      className="text-2xl font-semibold"
-                    >
+                    <span style={{ fontFamily: "var(--font-serif)" }} className="text-2xl font-semibold">
                       {role.company}
                     </span>
                     {role.current && (
                       <span
                         className="rounded-full px-2.5 py-0.5 text-xs font-medium"
-                        style={{
-                          border: `1px solid ${BRASS}55`,
-                          color: BRASS,
-                          background: `${BRASS}18`,
-                        }}
+                        style={{ border: `1px solid ${BRASS}55`, color: BRASS, background: `${BRASS}18` }}
                       >
                         Current
                       </span>
@@ -374,29 +379,50 @@ export default function SdetContent() {
                     <span className="text-white/45">{role.period}</span>
                   </div>
                   {role.client && (
-                    <p
-                      className="mb-3 text-xs text-white/35"
-                      style={{ fontFamily: "var(--font-mono)" }}
-                    >
+                    <p className="mb-3 text-xs text-white/35" style={{ fontFamily: "var(--font-mono)" }}>
                       {role.client}
                     </p>
                   )}
                   <ul className="space-y-2.5">
                     {role.bullets.map((b) => (
-                      <li
-                        key={b}
-                        className="flex items-start gap-2.5 text-sm leading-relaxed"
-                        style={{ color: "rgba(236,231,221,0.6)" }}
-                      >
-                        <span
-                          aria-hidden
-                          className="mt-[6px] h-1 w-1 shrink-0 rounded-full"
-                          style={{ background: `${BRASS}80` }}
-                        />
+                      <li key={b} className="flex items-start gap-2.5 text-sm leading-relaxed" style={{ color: "rgba(236,231,221,0.6)" }}>
+                        <span aria-hidden className="mt-[6px] h-1 w-1 shrink-0 rounded-full" style={{ background: `${BRASS}80` }} />
                         {b}
                       </li>
                     ))}
                   </ul>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── OFFICE PHOTOS ─────────────────────────────────────────── */}
+      <section className="py-10">
+        <div className="mx-auto max-w-4xl px-6">
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { src: "/assets/sdet-opentext.webp", caption: "OpenText · 2024" },
+              { src: "/assets/sdet-team.webp", caption: "Cyware Labs team" },
+            ].map(({ src, caption }) => (
+              <motion.div
+                key={src}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.6 }}
+                className="group relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.3)] transition-all hover:border-white/25"
+              >
+                <Image
+                  src={src}
+                  alt={caption}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 768px) 50vw, 400px"
+                />
+                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#0A0E17]/80 to-transparent p-3">
+                  <p className="text-xs text-white/70" style={{ fontFamily: "var(--font-mono)" }}>{caption}</p>
                 </div>
               </motion.div>
             ))}
@@ -436,16 +462,18 @@ export default function SdetContent() {
       {/* ── SKILLS GRID ───────────────────────────────────────────── */}
       <section className="py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            style={{ fontFamily: "var(--font-serif)" }}
-            className="mb-10 text-4xl tracking-tight sm:text-5xl"
-          >
-            Toolkit
-          </motion.h2>
+          <SectionHalo>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              style={{ fontFamily: "var(--font-serif)" }}
+              className="text-4xl tracking-tight sm:text-5xl"
+            >
+              Toolkit
+            </motion.h2>
+          </SectionHalo>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {SKILLS.map((group, i) => (
@@ -458,14 +486,8 @@ export default function SdetContent() {
                 className="rounded-2xl border border-white/10 bg-white/[0.05] p-6 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_4px_20px_rgba(0,0,0,0.2)] transition-colors hover:border-white/20"
               >
                 <div className="mb-4 flex items-center gap-2">
-                  <div
-                    className="h-px w-5"
-                    style={{ background: group.accent }}
-                  />
-                  <span
-                    className="text-xs font-medium uppercase tracking-widest"
-                    style={{ color: group.accent }}
-                  >
+                  <div className="h-px w-5" style={{ background: group.accent }} />
+                  <span className="text-xs font-medium uppercase tracking-widest" style={{ color: group.accent }}>
                     {group.group}
                   </span>
                 </div>
@@ -494,16 +516,18 @@ export default function SdetContent() {
       {/* ── IMPACT NUMBERS ────────────────────────────────────────── */}
       <section className="py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            style={{ fontFamily: "var(--font-serif)" }}
-            className="mb-10 text-4xl tracking-tight sm:text-5xl"
-          >
-            By the numbers
-          </motion.h2>
+          <SectionHalo>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              style={{ fontFamily: "var(--font-serif)" }}
+              className="text-4xl tracking-tight sm:text-5xl"
+            >
+              By the numbers
+            </motion.h2>
+          </SectionHalo>
 
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
             {IMPACT.map((m, i) => (
@@ -515,10 +539,7 @@ export default function SdetContent() {
                 transition={{ duration: 0.6, delay: i * 0.1 }}
                 className="rounded-xl border border-white/10 bg-white/[0.05] px-5 py-8 text-center backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.07)]"
               >
-                <div
-                  style={{ fontFamily: "var(--font-serif)", color: BRASS }}
-                  className="text-4xl font-semibold sm:text-5xl"
-                >
+                <div style={{ fontFamily: "var(--font-serif)", color: BRASS }} className="text-4xl font-semibold sm:text-5xl">
                   <Counter to={m.to} prefix={m.prefix} suffix={m.suffix} />
                 </div>
                 <p className="mt-2 text-xs text-white/50">{m.label}</p>
@@ -557,9 +578,7 @@ export default function SdetContent() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.25 }}
           >
-            <PageLink href="/training" variant="solid">
-              See my training work →
-            </PageLink>
+            <PageLink href="/training" variant="solid">See my training work →</PageLink>
           </motion.div>
         </div>
       </section>

@@ -2,6 +2,7 @@
 
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { motion, animate } from "framer-motion";
+import Image from "next/image";
 
 const BRASS = "#D8B450";
 const CYAN = "#38BDF8";
@@ -80,6 +81,23 @@ function Counter({
   );
 }
 
+/* ── Shared section-heading halo ────────────────────────────────────────── */
+function SectionHalo({ children }: { children: ReactNode }) {
+  return (
+    <div className="relative mb-10">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-x-6 -top-6 bottom-0 rounded-3xl"
+        style={{
+          background:
+            "radial-gradient(ellipse 75% 100% at 30% 30%, rgba(10,14,23,0.65) 0%, transparent 80%)",
+        }}
+      />
+      <div className="relative">{children}</div>
+    </div>
+  );
+}
+
 /* ── Data ───────────────────────────────────────────────────────────────── */
 
 const STATS = [
@@ -88,37 +106,18 @@ const STATS = [
   { to: 4, prefix: "", suffix: "", label: "subjects taught" },
 ];
 
-const PHOTO_TILES = [
-  {
-    label: "Whiteboard session",
-    sub: "Day 1 of a new batch",
-    grad: "radial-gradient(ellipse at 40% 40%, rgba(216,180,80,0.18), rgba(10,14,23,0.95))",
-  },
-  {
-    label: "First framework demo",
-    sub: "Student milestone",
-    grad: "radial-gradient(ellipse at 60% 60%, rgba(56,189,248,0.15), rgba(10,14,23,0.95))",
-  },
-  {
-    label: "Live session recording",
-    sub: "Recorded programme",
-    grad: "radial-gradient(ellipse at 50% 30%, rgba(216,180,80,0.12), rgba(10,14,23,0.95))",
-  },
-  {
-    label: "Mock interview prep",
-    sub: "Interview readiness",
-    grad: "radial-gradient(ellipse at 30% 70%, rgba(56,189,248,0.12), rgba(10,14,23,0.95))",
-  },
-  {
-    label: "Batch farewell",
-    sub: "End of programme",
-    grad: "radial-gradient(ellipse at 70% 40%, rgba(216,180,80,0.2), rgba(10,14,23,0.95))",
-  },
-  {
-    label: "Branch team",
-    sub: "22-member team",
-    grad: "radial-gradient(ellipse at 45% 55%, rgba(56,189,248,0.18), rgba(10,14,23,0.95))",
-  },
+/* Real training photos from /public/assets/ — captions from README.txt */
+const TRAINING_PHOTOS = [
+  { src: "/assets/training-whiteboard-sqlking.webp",   alt: "Whiteboard reading \"SQL KING VARUN SIR\" — written by students" },
+  { src: "/assets/training-whiteboard-missu.webp",     alt: "Whiteboard reading \"We Will Miss U / Best Teacher\" — student farewell" },
+  { src: "/assets/training-whiteboard-birthday.webp",  alt: "Whiteboard reading \"Happy Birthday SQL King\" — student celebration" },
+  { src: "/assets/training-student-sketches.webp",     alt: "Student pencil sketches of Varun as a trainer" },
+  { src: "/assets/training-batch-lecturehall.webp",    alt: "Large lecture-hall batch — showing the scale of training" },
+  { src: "/assets/training-batch-group.webp",          alt: "Batch group photo — students seated" },
+  { src: "/assets/training-students-filming.webp",     alt: "Students filming the training session on their phones" },
+  { src: "/assets/training-celebration.webp",          alt: "Batch celebration — crowd of students" },
+  { src: "/assets/training-selfie-group.webp",         alt: "Selfie with a group of students after class" },
+  { src: "/assets/training-institute-feature.webp",    alt: "Institute feature poster — QSpider / JSpider" },
 ];
 
 const SUBJECTS = [
@@ -168,17 +167,16 @@ const TESTIMONIALS = [
 
 /*
  * Reels created by students.
- * TODO: swap these Instagram links for self-hosted MP4 inline players
- * once videos are uploaded. Just replace the `url` with a relative path
- * and render a <video> tag instead of an anchor.
+ * TODO: swap these Instagram URLs for self-hosted MP4 inline players once
+ * videos are uploaded. Replace <a> with a <video controls> tag per reel.
  */
 const STUDENT_REELS = [
-  { url: "https://www.instagram.com/reel/CUSHYQDpuz1/", label: "Student Reel — Batch 2021", accent: BRASS },
-  { url: "https://www.instagram.com/reel/Ca1Fq94piEW/", label: "Student Reel — Selenium Demo", accent: CYAN },
-  { url: "https://www.instagram.com/reel/Cd2PDscJPc4/", label: "Student Reel — SQL Session", accent: BRASS },
-  { url: "https://www.instagram.com/reel/CX7z6FeDBpI21tdaL0jdhE8lLwnLX7llq_4hD80/", label: "Student Reel — Batch Celebration", accent: CYAN },
-  { url: "https://www.instagram.com/tv/CW0SOxUJBIh/", label: "Student TV — Live Session", accent: BRASS },
-  { url: "https://www.instagram.com/reel/COx3-HoAqmYNd8HjnN0po1OL-sU4JVRM3Rm2xc0/", label: "Student Reel — Interview Prep", accent: CYAN },
+  { url: "https://www.instagram.com/reel/CUSHYQDpuz1/",                                     label: "Student Reel — Batch 2021",       accent: BRASS },
+  { url: "https://www.instagram.com/reel/Ca1Fq94piEW/",                                     label: "Student Reel — Selenium Demo",    accent: CYAN  },
+  { url: "https://www.instagram.com/reel/Cd2PDscJPc4/",                                     label: "Student Reel — SQL Session",      accent: BRASS },
+  { url: "https://www.instagram.com/reel/CX7z6FeDBpI21tdaL0jdhE8lLwnLX7llq_4hD80/",       label: "Student Reel — Batch Celebration", accent: CYAN  },
+  { url: "https://www.instagram.com/tv/CW0SOxUJBIh/",                                       label: "Student TV — Live Session",       accent: BRASS },
+  { url: "https://www.instagram.com/reel/COx3-HoAqmYNd8HjnN0po1OL-sU4JVRM3Rm2xc0/",      label: "Student Reel — Interview Prep",   accent: CYAN  },
 ];
 
 const fadeUp = {
@@ -210,13 +208,12 @@ export default function TrainingContent() {
               "radial-gradient(ellipse 40% 40% at 10% 80%, rgba(56,189,248,0.07), transparent 55%)",
           }}
         />
-        {/* Dark halo for hero text */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 65% 85% at 20% 50%, rgba(10,14,23,0.65) 0%, transparent 80%)",
+              "radial-gradient(ellipse 70% 90% at 20% 50%, rgba(10,14,23,0.75) 0%, transparent 80%)",
           }}
         />
         <div className="relative mx-auto max-w-6xl px-6">
@@ -272,12 +269,9 @@ export default function TrainingContent() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.75 }}
-            className="rounded-2xl border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] sm:p-10"
+            className="rounded-2xl border border-white/10 bg-white/[0.05] p-8 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.07)] sm:p-10"
           >
-            <div
-              className="mb-3 h-px w-10"
-              style={{ background: BRASS }}
-            />
+            <div className="mb-3 h-px w-10" style={{ background: BRASS }} />
             <p className="text-lg leading-relaxed" style={{ color: TEXT }}>
               The classroom taught me something no framework ever could: how to
               explain a problem to someone who&apos;s seeing it for the first time.
@@ -303,18 +297,10 @@ export default function TrainingContent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="rounded-xl border border-white/10 bg-white/[0.05] px-6 py-8 text-center backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.07)]"
+                className="rounded-xl border border-white/10 bg-white/[0.06] px-6 py-8 text-center backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.07)]"
               >
-                <div
-                  style={{ fontFamily: "var(--font-serif)", color: BRASS }}
-                  className="text-5xl font-semibold"
-                >
-                  <Counter
-                    to={s.to}
-                    prefix={s.prefix}
-                    suffix={s.suffix}
-                    locale={s.locale}
-                  />
+                <div style={{ fontFamily: "var(--font-serif)", color: BRASS }} className="text-5xl font-semibold">
+                  <Counter to={s.to} prefix={s.prefix} suffix={s.suffix} locale={s.locale} />
                 </div>
                 <p className="mt-2 text-sm text-white/50">{s.label}</p>
               </motion.div>
@@ -323,78 +309,66 @@ export default function TrainingContent() {
         </div>
       </section>
 
-      {/* ── PHOTO / MEMORY GRID ───────────────────────────────────── */}
+      {/* ── TRAINING PHOTO GALLERY ─────────────────────────────────── */}
       <section className="py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            style={{ fontFamily: "var(--font-serif)" }}
-            className="mb-10 text-4xl tracking-tight sm:text-5xl"
-          >
-            Moments from the room.
-          </motion.h2>
+          <SectionHalo>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              style={{ fontFamily: "var(--font-serif)" }}
+              className="text-4xl tracking-tight sm:text-5xl"
+            >
+              Moments from the room.
+            </motion.h2>
+          </SectionHalo>
 
           <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
-            {PHOTO_TILES.map((tile, i) => (
+            {TRAINING_PHOTOS.map((photo, i) => (
               <motion.div
-                key={tile.label}
+                key={photo.src}
                 initial={{ opacity: 0, scale: 0.97 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.6, delay: i * 0.08 }}
-                className="group relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10"
-                style={{ background: tile.grad }}
+                transition={{ duration: 0.6, delay: i * 0.06 }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                className="group relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.3)] transition-all hover:border-white/25 hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
               >
-                {/* Camera icon */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white/20 transition-colors duration-300 group-hover:text-white/35">
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden
-                  >
-                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                    <circle cx="12" cy="13" r="4" />
-                  </svg>
-                  <span className="text-xs tracking-wide">{tile.label}</span>
-                  <span
-                    className="text-xs"
-                    style={{ color: "rgba(236,231,221,0.3)" }}
-                  >
-                    {tile.sub}
-                  </span>
-                </div>
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                />
+                {/* Hover overlay with alt caption */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0E17]/80 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <p className="absolute bottom-3 inset-x-3 text-xs leading-snug text-white/90 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  {photo.alt}
+                </p>
               </motion.div>
             ))}
           </div>
-
-          <p className="mt-4 text-xs text-white/30">
-            Photos coming soon — these tiles reserve the layout.
-          </p>
         </div>
       </section>
 
       {/* ── WHAT I TAUGHT ─────────────────────────────────────────── */}
       <section className="py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            style={{ fontFamily: "var(--font-serif)" }}
-            className="mb-10 text-4xl tracking-tight sm:text-5xl"
-          >
-            What I taught
-          </motion.h2>
+          <SectionHalo>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              style={{ fontFamily: "var(--font-serif)" }}
+              className="text-4xl tracking-tight sm:text-5xl"
+            >
+              What I taught
+            </motion.h2>
+          </SectionHalo>
 
           <div className="grid gap-4 sm:grid-cols-2">
             {SUBJECTS.map((s, i) => (
@@ -404,29 +378,15 @@ export default function TrainingContent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.65, delay: i * 0.1 }}
-                className="rounded-2xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_4px_20px_rgba(0,0,0,0.2)] transition-colors hover:border-white/20"
+                className="rounded-2xl border border-white/10 bg-white/[0.05] p-7 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_4px_20px_rgba(0,0,0,0.2)] transition-colors hover:border-white/20"
               >
                 <div className="mb-4 flex items-center gap-3">
-                  <div
-                    className="h-px w-5 shrink-0"
-                    style={{ background: s.accent }}
-                  />
-                  <h3
-                    style={{
-                      fontFamily: "var(--font-serif)",
-                      color: s.accent,
-                    }}
-                    className="text-xl font-semibold"
-                  >
+                  <div className="h-px w-5 shrink-0" style={{ background: s.accent }} />
+                  <h3 style={{ fontFamily: "var(--font-serif)", color: s.accent }} className="text-xl font-semibold">
                     {s.name}
                   </h3>
                 </div>
-                <p
-                  className="mb-4 text-sm leading-relaxed"
-                  style={{ color: TEXT }}
-                >
-                  {s.desc}
-                </p>
+                <p className="mb-4 text-sm leading-relaxed" style={{ color: TEXT }}>{s.desc}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {s.tools.map((t) => (
                     <span
@@ -452,16 +412,18 @@ export default function TrainingContent() {
       {/* ── TESTIMONIALS ──────────────────────────────────────────── */}
       <section className="py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            style={{ fontFamily: "var(--font-serif)" }}
-            className="mb-10 text-4xl tracking-tight sm:text-5xl"
-          >
-            Student voices
-          </motion.h2>
+          <SectionHalo>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              style={{ fontFamily: "var(--font-serif)" }}
+              className="text-4xl tracking-tight sm:text-5xl"
+            >
+              Student voices
+            </motion.h2>
+          </SectionHalo>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {TESTIMONIALS.map((t, i) => (
@@ -471,23 +433,16 @@ export default function TrainingContent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.65, delay: i * 0.1 }}
-                className="flex flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+                className="flex flex-col rounded-2xl border border-white/10 bg-white/[0.05] p-7 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
               >
-                {/* Opening quote mark */}
                 <div
                   className="mb-4 font-serif text-4xl leading-none"
-                  style={{
-                    fontFamily: "var(--font-serif)",
-                    color: `${BRASS}55`,
-                  }}
+                  style={{ fontFamily: "var(--font-serif)", color: `${BRASS}55` }}
                   aria-hidden
                 >
                   &ldquo;
                 </div>
-                <p
-                  className="flex-1 text-sm italic leading-relaxed"
-                  style={{ color: "rgba(236,231,221,0.75)" }}
-                >
+                <p className="flex-1 text-sm italic leading-relaxed" style={{ color: "rgba(236,231,221,0.75)" }}>
                   {t.quote}
                 </p>
                 <p className="mt-5 text-xs text-white/35">{t.attr}</p>
@@ -503,32 +458,31 @@ export default function TrainingContent() {
 
       {/* ── STUDENT REELS ─────────────────────────────────────────── */}
       {/*
-       * Reels created by students.
-       * TODO: swap Instagram URLs for self-hosted MP4 inline players
-       * once videos are hosted. Replace <a> with <video> tag per reel.
+       * Reels created by students — static thumbnail cards opening Instagram in a new tab.
+       * TODO: swap Instagram URLs for self-hosted MP4 inline <video> players
+       * once videos are uploaded to /public/assets/.
        */}
       <section className="py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            style={{ fontFamily: "var(--font-serif)" }}
-            className="mb-3 text-4xl tracking-tight sm:text-5xl"
-          >
-            Reels created by{" "}
-            <span className="italic" style={{ color: BRASS }}>my students.</span>
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="mb-10 text-sm text-white/45"
-          >
-            Students made these to capture what they learned — click any card to watch on Instagram.
-          </motion.p>
+          <SectionHalo>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2
+                style={{ fontFamily: "var(--font-serif)" }}
+                className="text-4xl tracking-tight sm:text-5xl"
+              >
+                Reels created by{" "}
+                <span className="italic" style={{ color: BRASS }}>my students.</span>
+              </h2>
+              <p className="mt-3 text-sm text-white/45">
+                Students made these to capture what they learned — click any card to watch on Instagram.
+              </p>
+            </motion.div>
+          </SectionHalo>
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             {STUDENT_REELS.map((reel, i) => (
@@ -543,8 +497,9 @@ export default function TrainingContent() {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.6, delay: i * 0.08 }}
                 whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                className="group relative flex aspect-[9/16] flex-col items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_4px_24px_rgba(0,0,0,0.3)] transition-all duration-200 hover:border-white/25 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.10),0_8px_32px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D8B450]/70"
+                className="group relative flex aspect-[9/16] flex-col items-center justify-center overflow-hidden rounded-2xl border backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_4px_24px_rgba(0,0,0,0.3)] transition-all duration-200 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.10),0_8px_32px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D8B450]/70"
                 style={{
+                  borderColor: `${reel.accent}40`,
                   background:
                     i % 2 === 0
                       ? `radial-gradient(ellipse at 50% 30%, ${BRASS}14, rgba(10,14,23,0.97))`
@@ -553,7 +508,7 @@ export default function TrainingContent() {
               >
                 {/* Accent top bar */}
                 <div
-                  className="absolute top-0 inset-x-0 h-[2px] rounded-t-2xl opacity-60 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-0 inset-x-0 h-[2px] rounded-t-2xl opacity-70 group-hover:opacity-100 transition-opacity"
                   style={{ background: reel.accent }}
                 />
 
@@ -561,18 +516,12 @@ export default function TrainingContent() {
                 <div
                   className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border transition-all duration-200 group-hover:scale-110"
                   style={{
-                    borderColor: `${reel.accent}50`,
-                    background: `${reel.accent}18`,
+                    borderColor: `${reel.accent}55`,
+                    background: `${reel.accent}1a`,
                     color: reel.accent,
                   }}
                 >
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden
-                  >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                     <polygon points="5 3 19 12 5 21 5 3" />
                   </svg>
                 </div>
@@ -633,12 +582,8 @@ export default function TrainingContent() {
             transition={{ duration: 0.5, delay: 0.25 }}
             className="flex flex-wrap justify-center gap-4"
           >
-            <PageLink href="/contact" variant="solid">
-              Get in touch
-            </PageLink>
-            <PageLink href="/sdet" variant="ghost">
-              ← Engineering work
-            </PageLink>
+            <PageLink href="/contact" variant="solid">Get in touch</PageLink>
+            <PageLink href="/sdet" variant="ghost">← Engineering work</PageLink>
           </motion.div>
         </div>
       </section>
