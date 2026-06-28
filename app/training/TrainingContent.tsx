@@ -239,10 +239,10 @@ export default function TrainingContent() {
             30,000+ students.
             <br />
             <span style={{ color: BRASS }} className="italic">
-              One classroom
+              Taught over the years,
             </span>
             <br />
-            at a time.
+            one batch at a time.
           </motion.h1>
 
           <motion.p
@@ -450,9 +450,6 @@ export default function TrainingContent() {
             ))}
           </div>
 
-          <p className="mt-4 text-xs text-white/30">
-            Placeholder testimonials — real quotes to be added.
-          </p>
         </div>
       </section>
 

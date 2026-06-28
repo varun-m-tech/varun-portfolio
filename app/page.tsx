@@ -202,15 +202,36 @@ export default function Page() {
         {/* ── HERO ─────────────────────────────────────────────────────── */}
         <section
           id="hero"
-          className="relative flex min-h-screen items-center"
+          className="relative flex min-h-screen items-center overflow-hidden"
         >
-          {/* Legibility veil — strong left, fades right */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0A0E17]/95 via-[#0A0E17]/70 to-[#0A0E17]/30" />
+          {/* Legibility veil — covers left, fades right */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0A0E17]/95 via-[#0A0E17]/75 to-[#0A0E17]/15" />
 
-          <div className="relative mx-auto w-full max-w-6xl px-6 py-24">
-            <div className="grid items-center gap-12 lg:grid-cols-[1fr_320px]">
+          {/* Hero portrait — absolutely positioned right side, desktop only */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            aria-hidden
+            className="pointer-events-none absolute right-0 top-0 hidden h-full w-[52%] lg:block"
+          >
+            <Image
+              src="/assets/home-hero.webp"
+              alt=""
+              fill
+              className="object-cover object-top"
+              priority
+            />
+            {/* Left-edge fade — portrait blends into dark background */}
+            <div className="absolute inset-y-0 left-0 w-3/5 bg-gradient-to-r from-[#0A0E17] to-transparent" />
+            {/* Bottom fade */}
+            <div className="absolute bottom-0 inset-x-0 h-1/4 bg-gradient-to-t from-[#0A0E17]/70 to-transparent" />
+          </motion.div>
 
-              {/* Text column */}
+          <div className="relative z-10 mx-auto w-full max-w-6xl px-6 py-24">
+            <div className="lg:max-w-[58%]">
+
+              {/* Text */}
               <div>
                 <motion.p
                   variants={fadeUp}
@@ -288,26 +309,6 @@ export default function Page() {
                   </MagneticButton>
                 </motion.div>
               </div>
-
-              {/* Hero portrait — desktop only */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="hidden lg:block"
-              >
-                <div className="relative h-[460px] w-full overflow-hidden rounded-2xl border border-white/10 shadow-[0_0_60px_rgba(216,180,80,0.07),inset_0_1px_0_rgba(255,255,255,0.07)]">
-                  <Image
-                    src="/assets/home-hero.webp"
-                    alt="Varun M — Senior SDET"
-                    fill
-                    className="object-cover object-top"
-                    priority
-                  />
-                  {/* Subtle bottom gradient for text separation */}
-                  <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-[#0A0E17]/60 to-transparent" />
-                </div>
-              </motion.div>
 
             </div>
           </div>
@@ -428,12 +429,12 @@ export default function Page() {
                   />
                 </div>
                 {/* Secondary photo — inset bottom-right */}
-                <div className="absolute -bottom-5 -right-5 hidden h-36 w-28 overflow-hidden rounded-xl border border-white/15 shadow-[0_4px_24px_rgba(0,0,0,0.4)] sm:block">
+                <div className="absolute -bottom-5 -right-5 hidden h-44 w-32 overflow-hidden rounded-xl border border-white/15 shadow-[0_4px_24px_rgba(0,0,0,0.4)] sm:block">
                   <Image
                     src="/assets/home-secondary.webp"
                     alt="Varun M — secondary portrait"
                     fill
-                    className="object-cover"
+                    className="object-cover object-top"
                   />
                 </div>
               </motion.div>
