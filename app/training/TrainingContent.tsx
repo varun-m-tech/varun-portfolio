@@ -500,25 +500,22 @@ export default function TrainingContent() {
                 className="group relative flex aspect-[9/16] flex-col items-center justify-center overflow-hidden rounded-2xl border backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_4px_24px_rgba(0,0,0,0.3)] transition-all duration-200 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.10),0_8px_32px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D8B450]/70"
                 style={{
                   borderColor: `${reel.accent}40`,
-                  background:
-                    i % 2 === 0
-                      ? `radial-gradient(ellipse at 50% 30%, ${BRASS}14, rgba(10,14,23,0.97))`
-                      : `radial-gradient(ellipse at 50% 30%, ${CYAN}12, rgba(10,14,23,0.97))`,
+                  background: "linear-gradient(135deg, rgba(216,180,80,0.22) 0%, rgba(56,189,248,0.12) 100%)",
                 }}
               >
                 {/* Accent top bar */}
                 <div
                   className="absolute top-0 inset-x-0 h-[2px] rounded-t-2xl opacity-70 group-hover:opacity-100 transition-opacity"
-                  style={{ background: reel.accent }}
+                  style={{ background: `linear-gradient(90deg, ${BRASS}, ${CYAN})` }}
                 />
 
                 {/* Play icon */}
                 <div
                   className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border transition-all duration-200 group-hover:scale-110"
                   style={{
-                    borderColor: `${reel.accent}55`,
-                    background: `${reel.accent}1a`,
-                    color: reel.accent,
+                    borderColor: "rgba(216,180,80,0.45)",
+                    background: "rgba(216,180,80,0.12)",
+                    color: BRASS,
                   }}
                 >
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -529,22 +526,18 @@ export default function TrainingContent() {
                 {/* Label */}
                 <p
                   className="px-4 text-center text-xs font-medium leading-snug transition-colors duration-200 group-hover:text-white"
-                  style={{ color: "rgba(236,231,221,0.6)" }}
+                  style={{ color: "rgba(236,231,221,0.75)" }}
                 >
                   {reel.label}
                 </p>
 
-                {/* External link indicator */}
-                <div
-                  className="absolute bottom-3 right-3 opacity-0 transition-opacity duration-200 group-hover:opacity-70"
-                  style={{ color: reel.accent }}
+                {/* Watch on Instagram */}
+                <p
+                  className="mt-2 px-4 text-center text-[10px] font-medium tracking-wide transition-opacity duration-200 opacity-50 group-hover:opacity-80"
+                  style={{ color: CYAN }}
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                    <polyline points="15 3 21 3 21 9" />
-                    <line x1="10" y1="14" x2="21" y2="3" />
-                  </svg>
-                </div>
+                  Watch on Instagram ↗
+                </p>
               </motion.a>
             ))}
           </div>
