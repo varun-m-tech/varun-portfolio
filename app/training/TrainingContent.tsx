@@ -3,6 +3,7 @@
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { motion, animate } from "framer-motion";
 import Image from "next/image";
+import HeroSection from "@/components/HeroSection";
 
 const BRASS = "#D8B450";
 const CYAN = "#38BDF8";
@@ -183,71 +184,32 @@ const fadeUp = {
 /* ── Page ───────────────────────────────────────────────────────────────── */
 export default function TrainingContent() {
   return (
-    <main className="relative z-10 min-h-screen pt-24">
+    <main className="relative z-10 min-h-screen">
 
       {/* ── HERO ──────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden py-24">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 60% 65% at 88% 20%, rgba(216,180,80,0.12), transparent 55%)," +
-              "radial-gradient(ellipse 40% 40% at 10% 80%, rgba(56,189,248,0.07), transparent 55%)",
-          }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 70% 90% at 20% 50%, rgba(10,14,23,0.75) 0%, transparent 80%)",
-          }}
-        />
-        <div className="relative mx-auto max-w-6xl px-6">
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={0}
-            className="mb-5 text-xs uppercase tracking-[0.28em]"
-            style={{ fontFamily: "var(--font-mono)", color: BRASS }}
-          >
-            From the classroom
-          </motion.p>
-
-          <motion.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={1}
-            style={{ fontFamily: "var(--font-serif)" }}
-            className="max-w-3xl text-5xl font-semibold leading-[1.0] tracking-tight sm:text-6xl lg:text-7xl"
-          >
+      <HeroSection
+        eyebrow="From the classroom"
+        heading={
+          <>
             30,000+ students.
             <br />
-            <span style={{ color: BRASS }} className="italic">
-              Taught over the years,
-            </span>
+            <span className="italic text-[#D8B450]">Taught over the years,</span>
             <br />
             one batch at a time.
-          </motion.h1>
-
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={2}
-            className="mt-7 max-w-xl text-lg leading-relaxed"
-            style={{ color: TEXT }}
-          >
-            Teaching and engineering were never two separate careers for me — they
-            ran in parallel. While I was building automation frameworks
-            professionally, I was also in classrooms, turning complex testing
-            concepts into things students could immediately use.
-          </motion.p>
-        </div>
-      </section>
+          </>
+        }
+        body="Teaching and engineering were never two separate careers for me — they ran in parallel. While I was building automation frameworks professionally, I was also in classrooms, turning complex testing concepts into things students could immediately use."
+        ctas={
+          <>
+            <PageLink href="/sdet" variant="solid">Engineering work →</PageLink>
+            <PageLink href="/contact" variant="ghost">Get in touch</PageLink>
+          </>
+        }
+        imageSrc="/assets/sdet-hero.webp"
+        imageAlt="Varun M — Trainer"
+        imagePosition="center top"
+        priority
+      />
 
       {/* ── EMOTIONAL INTRO ───────────────────────────────────────── */}
       <section className="py-16">

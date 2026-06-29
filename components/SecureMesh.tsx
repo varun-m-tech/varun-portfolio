@@ -40,7 +40,7 @@ interface Particle {
   text: string;
   alpha: number;
   color: string;
-  size: number;
+  font: string;
   px: number;
   py: number;
 }
@@ -66,21 +66,30 @@ export default function SecureMesh() {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const mobile = window.innerWidth < 768;
-    const N = mobile ? 12 : 26;
+    // Fewer tokens, cap DPR at 1.5
+    const N = mobile ? 8 : 20;
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const rng = mkRng(137);
 
     let W = 0;
     let H = 0;
     const resize = () => {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      canvas.style.width = `${W}px`;
+      canvas.style.height = `${H}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
     window.addEventListener("resize", resize, { passive: true });
 
+    // Pre-compute font strings to avoid per-frame allocations
     const particles: Particle[] = Array.from({ length: N }, () => {
       const isAccent = rng() < 0.18;
       const isBrass = rng() < 0.5;
+      const size = Math.round(9 + rng() * 5);
       return {
         x: rng() * window.innerWidth,
         y: rng() * window.innerHeight,
@@ -89,7 +98,7 @@ export default function SecureMesh() {
         text: TOKENS[Math.floor(rng() * TOKENS.length)],
         alpha: isAccent ? 0.10 + rng() * 0.04 : 0.04 + rng() * 0.035,
         color: isAccent ? (isBrass ? BRASS : CYAN) : "rgba(236,231,221,1)",
-        size: 9 + rng() * 5,
+        font: `${size}px 'JetBrains Mono', monospace`,
         px: (rng() - 0.5) * 0.012,
         py: (rng() - 0.5) * 0.006,
       };
@@ -102,9 +111,30 @@ export default function SecureMesh() {
     };
     window.addEventListener("mousemove", onMove, { passive: true });
 
+    // Pause state — tab hidden OR hero scrolled past
+    let paused = false;
+    const onVisibility = () => { paused = document.hidden; };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    const onScroll = () => {
+      if (!document.hidden) {
+        paused = window.scrollY > window.innerHeight * 1.5;
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // 30fps throttle
+    const FRAME_MS = 1000 / 30;
+    let lastTime = 0;
     let raf = 0;
-    const draw = () => {
+
+    const draw = (now: number) => {
+      raf = requestAnimationFrame(draw);
+      if (paused || now - lastTime < FRAME_MS) return;
+      lastTime = now;
+
       ctx.clearRect(0, 0, W, H);
+
       for (const p of particles) {
         if (!reduced) {
           p.x += p.vx;
@@ -117,18 +147,19 @@ export default function SecureMesh() {
         const oy = mouse.y * H * p.py;
         ctx.globalAlpha = p.alpha;
         ctx.fillStyle = p.color;
-        ctx.font = `${p.size}px 'JetBrains Mono', monospace`;
+        ctx.font = p.font;
         ctx.fillText(p.text, p.x + ox, p.y + oy);
       }
       ctx.globalAlpha = 1;
-      raf = requestAnimationFrame(draw);
     };
-    draw();
+    raf = requestAnimationFrame(draw);
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 
