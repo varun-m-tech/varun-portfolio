@@ -213,17 +213,18 @@ export default function Page() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
             aria-hidden
-            className="pointer-events-none absolute right-0 top-0 hidden h-full w-[52%] lg:block"
+            className="pointer-events-none absolute right-0 top-0 hidden h-full w-[50%] lg:block"
           >
             <Image
               src="/assets/home-hero.webp"
               alt=""
               fill
-              className="object-cover object-top"
+              style={{ objectPosition: "65% top" }}
+              className="object-cover"
               priority
             />
-            {/* Left-edge fade — portrait blends into dark background */}
-            <div className="absolute inset-y-0 left-0 w-3/5 bg-gradient-to-r from-[#0A0E17] to-transparent" />
+            {/* Left-edge fade — portrait blends into dark background (wider = more breathing room) */}
+            <div className="absolute inset-y-0 left-0 w-[65%] bg-gradient-to-r from-[#0A0E17] to-transparent" />
             {/* Bottom fade */}
             <div className="absolute bottom-0 inset-x-0 h-1/4 bg-gradient-to-t from-[#0A0E17]/70 to-transparent" />
           </motion.div>
@@ -307,6 +308,24 @@ export default function Page() {
                   <MagneticButton href="/resume" variant="ghost">
                     Résumé
                   </MagneticButton>
+                </motion.div>
+
+                {/* Mobile portrait — stacked below CTAs, hidden on desktop */}
+                <motion.div
+                  variants={fadeUp}
+                  initial="hidden"
+                  animate="show"
+                  custom={5}
+                  className="relative mt-10 aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-2xl border border-white/10 shadow-[0_8px_40px_rgba(0,0,0,0.4)] lg:hidden"
+                >
+                  <Image
+                    src="/assets/home-hero.webp"
+                    alt="Varun M"
+                    fill
+                    className="object-cover"
+                    style={{ objectPosition: "65% top" }}
+                  />
+                  <div className="absolute bottom-0 inset-x-0 h-1/3 bg-gradient-to-t from-[#0A0E17]/80 to-transparent" />
                 </motion.div>
               </div>
 
@@ -407,83 +426,96 @@ export default function Page() {
         </section>
 
         {/* ── ABOUT GLANCE ─────────────────────────────────────────────── */}
-        <section id="about" className="relative py-20">
-          <div className="mx-auto max-w-6xl px-6">
-            <div className="grid items-center gap-14 md:grid-cols-2">
+        <section id="about" className="relative overflow-hidden py-20 md:min-h-[640px] md:flex md:items-center">
 
-              {/* Photo column — real images */}
-              <motion.div
-                initial={{ opacity: 0, x: -24 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.8 }}
-                className="relative mx-auto w-full max-w-xs md:mx-0"
-              >
-                {/* Primary portrait */}
-                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_8px_40px_rgba(0,0,0,0.35)]">
-                  <Image
-                    src="/assets/home-about-sidelook.webp"
-                    alt="Varun M — side-look portrait"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                {/* Secondary photo — inset bottom-right */}
-                <div className="absolute -bottom-5 -right-5 hidden h-44 w-32 overflow-hidden rounded-xl border border-white/15 shadow-[0_4px_24px_rgba(0,0,0,0.4)] sm:block">
-                  <Image
-                    src="/assets/home-secondary.webp"
-                    alt="Varun M — secondary portrait"
-                    fill
-                    className="object-cover object-top"
-                  />
-                </div>
-              </motion.div>
+          {/* Desktop: hero-style portrait filling left side with soft fades */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.9 }}
+            aria-hidden
+            className="pointer-events-none absolute left-0 top-0 hidden h-full w-[46%] md:block"
+          >
+            <Image
+              src="/assets/home-about-sidelook.webp"
+              alt=""
+              fill
+              style={{ objectPosition: "60% top" }}
+              className="object-cover"
+            />
+            {/* Right-edge fade — blends into background */}
+            <div className="absolute inset-y-0 right-0 w-3/5 bg-gradient-to-l from-[#0A0E17] to-transparent" />
+            {/* Top fade */}
+            <div className="absolute top-0 inset-x-0 h-1/5 bg-gradient-to-b from-[#0A0E17]/80 to-transparent" />
+            {/* Bottom fade */}
+            <div className="absolute bottom-0 inset-x-0 h-1/4 bg-gradient-to-t from-[#0A0E17]/80 to-transparent" />
+          </motion.div>
 
-              {/* Bio */}
-              <motion.div
-                initial={{ opacity: 0, x: 24 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.8, delay: 0.1 }}
-                className="relative"
+          <div className="relative mx-auto w-full max-w-6xl px-6">
+
+            {/* Mobile: stacked portrait above bio */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.75 }}
+              className="relative mb-8 aspect-[4/5] w-full max-w-[280px] overflow-hidden rounded-2xl border border-white/10 shadow-[0_8px_40px_rgba(0,0,0,0.35)] md:hidden"
+            >
+              <Image
+                src="/assets/home-about-sidelook.webp"
+                alt="Varun M"
+                fill
+                style={{ objectPosition: "60% top" }}
+                className="object-cover"
+              />
+              <div className="absolute bottom-0 inset-x-0 h-1/3 bg-gradient-to-t from-[#0A0E17]/80 to-transparent" />
+            </motion.div>
+
+            {/* Bio — pushed right on desktop to create slight heading-over-photo overlap */}
+            <motion.div
+              initial={{ opacity: 0, x: 24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="relative md:ml-auto md:w-[58%]"
+            >
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -inset-6 rounded-2xl"
+                style={{
+                  background:
+                    "radial-gradient(ellipse 90% 90% at 60% 50%, rgba(10,14,23,0.60) 0%, transparent 85%)",
+                }}
+              />
+              <p className="relative mb-3 text-xs uppercase tracking-[0.22em] text-[#38BDF8]">
+                About
+              </p>
+              <h2
+                style={{ fontFamily: "var(--font-serif)" }}
+                className="relative mb-5 text-4xl tracking-tight sm:text-5xl"
               >
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute -inset-6 rounded-2xl"
-                  style={{
-                    background:
-                      "radial-gradient(ellipse 90% 90% at 60% 50%, rgba(10,14,23,0.55) 0%, transparent 85%)",
-                  }}
-                />
-                <p className="relative mb-3 text-xs uppercase tracking-[0.22em] text-[#38BDF8]">
-                  About
-                </p>
-                <h2
-                  style={{ fontFamily: "var(--font-serif)" }}
-                  className="relative mb-5 text-4xl tracking-tight sm:text-5xl"
-                >
-                  From the classroom
-                  <br />
-                  <span className="italic text-[#D8B450]">to the codebase.</span>
-                </h2>
-                <p className="relative mb-4 text-base leading-relaxed text-white/65">
-                  Nearly seven years in quality engineering since 2019 — across
-                  cybersecurity, banking, fintech, logistics, and edtech. For most of
-                  that time I was also in classrooms: teaching 30,000+ students to
-                  test software at QSpider while building automation frameworks
-                  professionally. Not one after the other — both at once.
-                </p>
-                <p className="relative mb-8 text-base leading-relaxed text-white/65">
-                  Today I&apos;m a Senior SDET at Cyware Labs, working on
-                  Python/Pytest suites and CI pipelines for cybersecurity products.
-                  I&apos;ve added AI-assisted testing to the mix — Claude, Cursor,
-                  Gemini, Jira Rovo — and I still explain everything I build.
-                </p>
-                <MagneticButton href="/contact" variant="solid">
-                  Get in touch
-                </MagneticButton>
-              </motion.div>
-            </div>
+                From the classroom
+                <br />
+                <span className="italic text-[#D8B450]">to the codebase.</span>
+              </h2>
+              <p className="relative mb-4 text-base leading-relaxed text-white/65">
+                Nearly seven years in quality engineering since 2019 — across
+                cybersecurity, banking, fintech, logistics, and edtech. For most of
+                that time I was also in classrooms: teaching 30,000+ students to
+                test software at QSpider while building automation frameworks
+                professionally. Not one after the other — both at once.
+              </p>
+              <p className="relative mb-8 text-base leading-relaxed text-white/65">
+                Today I&apos;m a Senior SDET at Cyware Labs, working on
+                Python/Pytest suites and CI pipelines for cybersecurity products.
+                I&apos;ve added AI-assisted testing to the mix — Claude, Cursor,
+                Gemini, Jira Rovo — and I still explain everything I build.
+              </p>
+              <MagneticButton href="/contact" variant="solid">
+                Get in touch
+              </MagneticButton>
+            </motion.div>
           </div>
         </section>
 

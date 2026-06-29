@@ -238,7 +238,8 @@ export default function SdetContent() {
     <main className="relative z-10 min-h-screen pt-24">
 
       {/* ── HERO ──────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden py-24">
+      <section className="relative overflow-hidden py-24 lg:flex lg:min-h-[80vh] lg:items-center">
+        {/* Legibility veil for desktop when portrait is visible */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
@@ -252,49 +253,90 @@ export default function SdetContent() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 65% 85% at 20% 50%, rgba(10,14,23,0.75) 0%, transparent 80%)",
+              "radial-gradient(ellipse 65% 85% at 20% 50%, rgba(10,14,23,0.80) 0%, transparent 80%)",
           }}
         />
-        <div className="relative mx-auto max-w-6xl px-6">
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={0}
-            className="mb-5 text-xs uppercase tracking-[0.28em]"
-            style={{ fontFamily: "var(--font-mono)", color: BRASS }}
-          >
-            Software · SDET
-          </motion.p>
 
-          <motion.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={1}
-            style={{ fontFamily: "var(--font-serif)" }}
-            className="max-w-3xl text-5xl font-semibold leading-[1.0] tracking-tight sm:text-6xl lg:text-7xl"
-          >
-            I build automation
-            <br />
-            <span style={{ color: BRASS }} className="italic">
-              that scales.
-            </span>
-          </motion.h1>
+        {/* Portrait — desktop right side, same treatment as home hero */}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1.1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          aria-hidden
+          className="pointer-events-none absolute right-0 top-0 hidden h-full w-[45%] lg:block"
+        >
+          <Image
+            src="/assets/sdet-hero.webp"
+            alt=""
+            fill
+            style={{ objectPosition: "60% top" }}
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-y-0 left-0 w-3/5 bg-gradient-to-r from-[#0A0E17] to-transparent" />
+          <div className="absolute bottom-0 inset-x-0 h-1/4 bg-gradient-to-t from-[#0A0E17]/70 to-transparent" />
+        </motion.div>
 
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={2}
-            className="mt-6 max-w-xl text-lg leading-relaxed"
-            style={{ color: TEXT }}
+        <div className="relative z-10 mx-auto max-w-6xl px-6">
+          {/* Mobile portrait — visible above text on small screens */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="relative mb-8 aspect-[16/9] w-full overflow-hidden rounded-2xl border border-white/10 shadow-[0_8px_40px_rgba(0,0,0,0.4)] lg:hidden"
           >
-            Senior SDET at Cyware Labs — building Python/Pytest frameworks and
-            CI pipelines for cybersecurity products. Nearly seven years across
-            cybersecurity, banking, fintech, logistics, and edtech, all under
-            Test Yantra Software Solutions since Aug 2019.
-          </motion.p>
+            <Image
+              src="/assets/sdet-hero.webp"
+              alt="Varun M — SDET"
+              fill
+              style={{ objectPosition: "60% top" }}
+              className="object-cover"
+              priority
+            />
+            <div className="absolute bottom-0 inset-x-0 h-1/3 bg-gradient-to-t from-[#0A0E17]/80 to-transparent" />
+          </motion.div>
+
+          <div className="lg:max-w-[55%]">
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={0}
+              className="mb-5 text-xs uppercase tracking-[0.28em]"
+              style={{ fontFamily: "var(--font-mono)", color: BRASS }}
+            >
+              Software · SDET
+            </motion.p>
+
+            <motion.h1
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={1}
+              style={{ fontFamily: "var(--font-serif)" }}
+              className="max-w-3xl text-5xl font-semibold leading-[1.0] tracking-tight sm:text-6xl lg:text-7xl"
+            >
+              I build automation
+              <br />
+              <span style={{ color: BRASS }} className="italic">
+                that scales.
+              </span>
+            </motion.h1>
+
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={2}
+              className="mt-6 max-w-xl text-lg leading-relaxed"
+              style={{ color: TEXT }}
+            >
+              Senior SDET at Cyware Labs — building Python/Pytest frameworks and
+              CI pipelines for cybersecurity products. Nearly seven years across
+              cybersecurity, banking, fintech, logistics, and edtech, all under
+              Test Yantra Software Solutions since Aug 2019.
+            </motion.p>
+          </div>
         </div>
       </section>
 
@@ -404,7 +446,7 @@ export default function SdetContent() {
           <div className="grid grid-cols-2 gap-4">
             {[
               { src: "/assets/sdet-opentext.webp", caption: "OpenText · 2024" },
-              { src: "/assets/sdet-team.webp", caption: "Cyware Labs team" },
+              { src: "/assets/cyware-team.webp", caption: "Cyware Labs" },
             ].map(({ src, caption }) => (
               <motion.div
                 key={src}

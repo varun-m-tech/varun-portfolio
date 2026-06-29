@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LenisInit from "@/components/LenisInit";
+import CustomCursor from "@/components/CustomCursor";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       className={`${fraunces.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
       <body className="bg-ink text-text font-sans antialiased">
+        <CustomCursor />
         <LenisInit />
         <Navbar />
         {children}

@@ -118,6 +118,12 @@ const TRAINING_PHOTOS = [
   { src: "/assets/training-celebration.webp",          alt: "Batch celebration — crowd of students" },
   { src: "/assets/training-selfie-group.webp",         alt: "Selfie with a group of students after class" },
   { src: "/assets/training-institute-feature.webp",    alt: "Institute feature poster — QSpider / JSpider" },
+  { src: "/assets/training-batch-classroom.webp",      alt: "Training batch" },
+  { src: "/assets/training-batch-selfie.webp",         alt: "Selfie with a batch" },
+  { src: "/assets/training-batch-women.webp",          alt: "Training batch" },
+  { src: "/assets/training-seminar-hall.webp",         alt: "Seminar crowd" },
+  { src: "/assets/training-seminar-selfie.webp",       alt: "Seminar session" },
+  { src: "/assets/training-mega-batch.webp",           alt: "Large training batch" },
 ];
 
 const SUBJECTS = [
@@ -144,24 +150,6 @@ const SUBJECTS = [
     accent: CYAN,
     desc: "Resume review, mock interviews, common QA interview patterns, and job search strategy for new engineers.",
     tools: ["Mock interviews", "Resume review", "Job strategy"],
-  },
-];
-
-const TESTIMONIALS = [
-  {
-    quote:
-      "The way Varun explains Selenium made me realise I'd been overcomplicating it for months. One session changed my entire approach to automation.",
-    attr: "— Former student, Batch 2022",
-  },
-  {
-    quote:
-      "I came in knowing nothing about testing and left with a job offer. The practical focus — real scenarios, real bugs — made all the difference.",
-    attr: "— QSpider student, 2021",
-  },
-  {
-    quote:
-      "His SQL sessions were unlike anything I'd attended. Always the 'why' behind the query, never just the syntax. That's a rare quality in a trainer.",
-    attr: "— Student, JSpider",
   },
 ];
 
@@ -406,50 +394,6 @@ export default function TrainingContent() {
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ── TESTIMONIALS ──────────────────────────────────────────── */}
-      <section className="py-20">
-        <div className="mx-auto max-w-6xl px-6">
-          <SectionHalo>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              style={{ fontFamily: "var(--font-serif)" }}
-              className="text-4xl tracking-tight sm:text-5xl"
-            >
-              Student voices
-            </motion.h2>
-          </SectionHalo>
-
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {TESTIMONIALS.map((t, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.65, delay: i * 0.1 }}
-                className="flex flex-col rounded-2xl border border-white/10 bg-white/[0.05] p-7 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
-              >
-                <div
-                  className="mb-4 font-serif text-4xl leading-none"
-                  style={{ fontFamily: "var(--font-serif)", color: `${BRASS}55` }}
-                  aria-hidden
-                >
-                  &ldquo;
-                </div>
-                <p className="flex-1 text-sm italic leading-relaxed" style={{ color: "rgba(236,231,221,0.75)" }}>
-                  {t.quote}
-                </p>
-                <p className="mt-5 text-xs text-white/35">{t.attr}</p>
-              </motion.div>
-            ))}
-          </div>
-
         </div>
       </section>
 

@@ -48,8 +48,8 @@ export default function Navbar() {
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "border-b border-white/8 bg-ink/75 py-3 backdrop-blur-xl"
-          : "border-b border-transparent bg-transparent py-5"
+          ? "border-b border-white/8 bg-[#0A0E17]/82 py-3 backdrop-blur-xl"
+          : "border-b border-white/[0.05] bg-[#0A0E17]/40 py-5 backdrop-blur-md"
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6">
@@ -68,7 +68,7 @@ export default function Navbar() {
               key={l.href}
               href={l.href}
               className={`group relative text-sm transition-colors ${
-                isActive(l.href) ? "text-text" : "text-muted hover:text-text"
+                isActive(l.href) ? "text-[#ECE7DD]" : "text-[#ECE7DD]/65 hover:text-[#ECE7DD]"
               }`}
             >
               {l.label}
@@ -122,7 +122,7 @@ export default function Navbar() {
                   key={l.href}
                   href={l.href}
                   className={`rounded-lg px-3 py-3 text-base transition-colors hover:bg-white/5 ${
-                    isActive(l.href) ? "text-text" : "text-muted hover:text-text"
+                    isActive(l.href) ? "text-[#ECE7DD]" : "text-[#ECE7DD]/65 hover:text-[#ECE7DD]"
                   }`}
                 >
                   {l.label}
